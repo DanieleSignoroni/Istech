@@ -41,7 +41,7 @@ public class YModulaConnection {
 		if(host == null || dbname == null || userName == null || password == null)
 			retrieveConnectionValues();
 		Connection connection = null;
-		ConnectionDescriptor cnd = new ConnectionDescriptor(classDriver,userName, password, new SQLServerJTDSNoUnicodeDatabase(host, port));
+		ConnectionDescriptor cnd = new ConnectionDescriptor(dbname,userName, password, new SQLServerJTDSNoUnicodeDatabase(host, port));
 		try {
 			cnd.openConnection();
 			connection = cnd.getConnection();

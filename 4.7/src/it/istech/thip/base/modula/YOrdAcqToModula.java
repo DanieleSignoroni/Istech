@@ -74,7 +74,7 @@ public class YOrdAcqToModula extends YOrdAcqToModulaPO {
 		BigDecimal qta = BigDecimal.ZERO;
 		YPanthToModula pTm = (YPanthToModula) Factory.createObject(YPanthToModula.class);
 		pTm.setIdAzienda(this.getIdAzienda());
-		pTm.setTipoDoc('V');
+		pTm.setTipoDoc('B');
 		pTm.setIdAnnoDoc(this.getRAnnoOrdAcq());
 		pTm.setIdNumeroDoc(this.getRNumeroOrdAcq());
 		pTm.setIdRigaDoc(this.getRRigaOrd());
@@ -148,7 +148,7 @@ public class YOrdAcqToModula extends YOrdAcqToModulaPO {
 	public static int cancellaRigheOrdineAcquisto(String keyOrdVen) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
 		int recordCancellati = 0;
 		String[] c = keyOrdVen.split(KeyHelper.KEY_SEPARATOR);
-		String where = " ID_AZIENDA = '"+c[0]+"' AND R_ANNO_ORD_VEN = '"+c[1]+"' AND R_NUMERO_ORD_VEN = '"+c[2]+"' ";
+		String where = " ID_AZIENDA = '"+c[0]+"' AND "+YOrdAcqToModulaTM.R_ANNO_ORD_ACQ+" = '"+c[1]+"' AND "+YOrdAcqToModulaTM.R_NUMERO_ORD_ACQ+" = '"+c[2]+"' ";
 		List<YOrdVenToModula> records = YOrdVenToModula.retrieveList(YOrdVenToModula.class,where, "", false);
 		for(YOrdVenToModula record : records) {
 			record.delete();
@@ -227,7 +227,7 @@ public class YOrdAcqToModula extends YOrdAcqToModulaPO {
 		ErrorMessage em = null;
 		YPanthToModula pTm = (YPanthToModula) Factory.createObject(YPanthToModula.class);
 		pTm.setIdAzienda(this.getIdAzienda());
-		pTm.setTipoDoc('V');
+		pTm.setTipoDoc('B');
 		pTm.setIdAnnoDoc(this.getRAnnoOrdAcq());
 		pTm.setIdNumeroDoc(this.getRNumeroOrdAcq());
 		pTm.setIdRigaDoc(this.getRRigaOrd());
@@ -236,7 +236,7 @@ public class YOrdAcqToModula extends YOrdAcqToModulaPO {
 		if(!exists) {
 			pTm.setQtaEvasaUmPrm(BigDecimal.ZERO);
 		}
-		pTm.setTipoMov('P');
+		pTm.setTipoMov(TipoMovimentoModula.VERSAMENTO);
 		pTm.setQtaEvasaUmPrm(pTm.getQtaEvasaUmPrm().add(this.getQtaDaEvadere()));
 		int rc = pTm.save();
 		if(rc < 0)
@@ -292,7 +292,7 @@ public class YOrdAcqToModula extends YOrdAcqToModulaPO {
 				) {
 			ps.setString(1, numeroListaModula);
 			ps.setString(2, descrizioneLista);
-			ps.setString(3, "P");
+			ps.setString(3, String.valueOf(TipoMovimentoModula.VERSAMENTO));
 			ps.setString(4, null);
 			int ris = ps.executeUpdate();
 			if(ris > 0) {

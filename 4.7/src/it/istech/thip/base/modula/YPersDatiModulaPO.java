@@ -135,26 +135,26 @@ public static Vector retrieveList(String where, String orderBy, boolean optimist
 
   public void setRSerieDocTra(String rSerieDocTra) {
     String key = iRelseriedoctrasf.getKey();
-    iRelseriedoctrasf.setKey(KeyHelper.replaceTokenObjectKey(key , 2, rSerieDocTra));
+    iRelseriedoctrasf.setKey(KeyHelper.replaceTokenObjectKey(key , 3, rSerieDocTra));
     setDirty();
   }
 
   public String getRSerieDocTra() {
     String key = iRelseriedoctrasf.getKey();
-    String objRSerieDocTra = KeyHelper.getTokenObjectKey(key,2);
+    String objRSerieDocTra = KeyHelper.getTokenObjectKey(key,3);
     return objRSerieDocTra;
     
   }
 
   public void setRNumeratoreDocTra(String rNumeratoreDocTra) {
     String key = iRelseriedoctrasf.getKey();
-    iRelseriedoctrasf.setKey(KeyHelper.replaceTokenObjectKey(key , 3, rNumeratoreDocTra));
+    iRelseriedoctrasf.setKey(KeyHelper.replaceTokenObjectKey(key , 2, rNumeratoreDocTra));
     setDirty();
   }
 
   public String getRNumeratoreDocTra() {
     String key = iRelseriedoctrasf.getKey();
-    String objRNumeratoreDocTra = KeyHelper.getTokenObjectKey(key,3);
+    String objRNumeratoreDocTra = KeyHelper.getTokenObjectKey(key,2);
     return objRNumeratoreDocTra;
   }
 
