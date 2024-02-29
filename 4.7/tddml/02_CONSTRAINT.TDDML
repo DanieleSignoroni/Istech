@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE TDDML SYSTEM "../../../TDDML.dtd">
+<TDDML>
+  <!-- YPANTH_TO_MODULA (YPANTH_) -->
+  <AlterTable schema="THIPPERS" name="YPANTH_TO_MODULA">
+    <AddConstraint>
+      <Constraint name="Azienda_159381957" refschema="THIP" reftable="AZIENDE_ESTESE" schema="THIPPERS" ondelete="Restrict">
+        <ColumnRef name="ID_AZIENDA"/>
+      </Constraint>
+    </AddConstraint>
+  </AlterTable>
+</TDDML>

@@ -1,0 +1,33 @@
+<tfml>
+  <generator type="form"/>
+  <form classHdr="YDocAcqToModula"
+    name="YDocAcqToModulaForm"
+    locktype="nolock"
+    errorList="yes" menubar="yes" toolbar="yes" submitReset="none"
+    jsLibraryName="it/istech/thip/base/modula/YDocAcqToModula.js"
+    onLoadPresent="yes"
+    header="com.thera.thermfw.common.Header.jsp"
+    footer="com.thera.thermfw.common.Footer.jsp">
+    <menubar  name="myMenuBar">
+      <import file="it/thera/thip/cs/defObjMenu.tfml"/>
+    </menubar>
+    <toolbar name="myToolBar" imgwidth="16" imgheight="16">
+      <import file="it/thera/thip/cs/defObjMenu.tfml"/>
+    </toolbar>
+    <tabbed name="mytabbed" height="100%" width="100%">
+      <tab name="tab1" resourceFile="it.istech.thip.base.modula.resources.YDocAcqToModula" resourceID="tab1">
+        <textinput name="RAnnoDocAcq" classAD="RAnnoDocAcq"/>
+        <textinput name="RNumeroDocAcq" classAD="RNumeroDocAcq"/>
+        <textinput name="RRigaDoc" classAD="RRigaDoc"/>
+        <textinput name="RDetRigaDoc" classAD="RDetRigaDoc"/>
+        <multisearchform name="RelArticolo" classRD="RelArticolo"/>
+        <textinput name="QtaOriginale" classAD="QtaOriginale"/>
+        <textinput name="QtaEvasa" classAD="QtaEvasa"/>
+        <textinput name="QtaResidua" classAD="QtaResidua"/>
+        <textinput name="Giacenza" classAD="Giacenza"/>
+        <textinput name="QtaDaEvadere" classAD="QtaDaEvadere"/>
+      </tab>
+    </tabbed>
+  </form>
+</tfml>
+

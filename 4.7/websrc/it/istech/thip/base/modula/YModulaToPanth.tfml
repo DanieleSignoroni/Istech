@@ -1,0 +1,26 @@
+<tfml>
+  <generator type="form"/>
+  <form classHdr="YModulaToPanth"
+    name="YModulaToPanthForm"
+    locktype="nolock"
+    errorList="yes" menubar="yes" toolbar="yes" submitReset="none"
+    jsLibraryName="it/istech/thip/base/modula/YModulaToPanth.js"
+    onLoadPresent="yes"
+    header="com.thera.thermfw.common.Header.jsp"
+    footer="com.thera.thermfw.common.Footer.jsp">
+    
+    <textinput name="IdAzienda" classAD="IdAzienda"/>
+    <tabbed name="mytabbed" height="100%" width="100%">
+      <tab name="tab1" resourceFile="it.istech.thip.base.modula.resources.YModulaToPanth" resourceID="tab1">
+        <textinput name="Id" classAD="Id"/>
+        <textinput name="Ordine" classAD="Ordine"/>
+        <textinput name="Articolo" classAD="Articolo"/>
+        <combobox name="TipoMov" classAD="TipoMov"/>
+        <combobox name="TipoDoc" classAD="TipoDoc"/>
+        <textinput name="QtaEvasaUmPrm" classAD="QtaEvasaUmPrm"/>
+        <subform classCD="DatiComuniEstesi" name="DatiComuniEstesi"/>
+      </tab>
+    </tabbed>
+  </form>
+</tfml>
+

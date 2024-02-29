@@ -1,0 +1,32 @@
+<tfml>
+  <generator type="form"/>
+  <form classHdr="YPanthToModula"
+    name="YPanthToModulaForm"
+    locktype="nolock"
+    errorList="yes" menubar="yes" toolbar="yes" submitReset="none"
+    jsLibraryName="it/istech/thip/base/modula/YPanthToModula.js"
+    onLoadPresent="yes"
+    header="com.thera.thermfw.common.Header.jsp"
+    footer="com.thera.thermfw.common.Footer.jsp">
+    <menubar  name="myMenuBar">
+      <import file="it/thera/thip/cs/defObjMenu.tfml"/>
+    </menubar>
+    <toolbar name="myToolBar" imgwidth="16" imgheight="16">
+      <import file="it/thera/thip/cs/defObjMenu.tfml"/>
+    </toolbar>
+    <textinput name="IdAzienda" classAD="IdAzienda"/>
+    <tabbed name="mytabbed" height="100%" width="100%">
+      <tab name="tab1" resourceFile="it.istech.thip.base.modula.resources.YPanthToModula" resourceID="tab1">
+        <combobox name="TipoDoc" classAD="TipoDoc"/>
+        <textinput name="IdAnnoDoc" classAD="IdAnnoDoc"/>
+        <textinput name="IdNumeroDoc" classAD="IdNumeroDoc"/>
+        <textinput name="IdRigaDoc" classAD="IdRigaDoc"/>
+        <textinput name="IdDetRigaDoc" classAD="IdDetRigaDoc"/>
+        <combobox name="TipoMov" classAD="TipoMov"/>
+        <textinput name="QtaEvasaUmPrm" classAD="QtaEvasaUmPrm"/>
+        <subform classCD="DatiComuniEstesi" name="DatiComuniEstesi"/>
+      </tab>
+    </tabbed>
+  </form>
+</tfml>
+

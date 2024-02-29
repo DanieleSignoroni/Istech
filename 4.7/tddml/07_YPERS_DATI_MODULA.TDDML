@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE TDDML SYSTEM "../../../TDDML.dtd">
+<TDDML>
+  <!-- YPERS_DATI_MODULA (YPERS_D): Personalizzazione dati Modula; -->
+  <CreateTable schema="THIPPERS" name="YPERS_DATI_MODULA" shortname="YPERS_D">
+    <Column name="ID_AZIENDA" shortname="ID_AZIENDA" type="char" length="3" nullable="no"/>
+    <Column name="R_SERIE_DOC_TRA" shortname="R_SERIE_DO" type="char" length="2" nullable="yes"/>
+    <Column name="R_CAU_TES_DOC_TRA" shortname="R_CAU_TES_" type="char" length="3" nullable="yes"/>
+    <Column name="R_NUMERATORE_DOC_TRA" shortname="R_NUMERATO" type="char" length="15" nullable="yes"/>
+    <Column name="R_SERIE_DOC_GEN" shortname="R_SERIE_D0" type="char" length="2" nullable="yes"/>
+    <Column name="R_NUMERATORE_DOC_GEN" shortname="R_NUMERAT0" type="char" length="15" nullable="yes"/>
+    <Column name="R_CAU_DOC_GEN" shortname="R_CAU_DOC_" type="char" length="3" nullable="yes"/>
+    <Column name="R_CAU_DOC_GEN_RIG_VERS" shortname="R_CAU_DOC0" type="char" length="3" nullable="yes"/>
+    <Column name="R_CAU_DOC_GEN_RIG_PREL" shortname="R_CAU_DOC1" type="char" length="3" nullable="yes"/>
+    <Column name="R_SERIE_DOC_RIALL" shortname="R_SERIE_D1" type="char" length="2" nullable="yes"/>
+    <Column name="R_NUMERATORE_DOC_RIALL" shortname="R_NUMERAT1" type="char" length="15" nullable="yes"/>
+    <Column name="R_CAU_DOC_RIALL" shortname="R_CAU_DOC2" type="char" length="3" nullable="yes"/>
+    <Column name="R_CAU_DOC_RIALL_RIG_RETPOS" shortname="R_CAU_DOC3" type="char" length="3" nullable="yes"/>
+    <Column name="R_CAU_DOC_RIALL_RIG_RETNEG" shortname="R_CAU_DOC4" type="char" length="3" nullable="yes"/>
+    <Constraint name="RelCauDocGen_18412" refschema="THIP" reftable="CAU_DOCGNR" schema="THIPPERS" ondelete="Restrict">
+      <ColumnRef name="ID_AZIENDA"/>
+      <ColumnRef name="R_CAU_DOC_GEN"/>
+    </Constraint>
+    <Constraint name="RelCauDocRiall_638" refschema="THIP" reftable="CAU_DOCGNR" schema="THIPPERS" ondelete="Restrict">
+      <ColumnRef name="ID_AZIENDA"/>
+      <ColumnRef name="R_CAU_DOC_RIALL"/>
+    </Constraint>
+    <Constraint name="RelCauDocRigPrel_9" refschema="THIP" reftable="CAU_DOCGNR_RIG" schema="THIPPERS" ondelete="Restrict">
+      <ColumnRef name="ID_AZIENDA"/>
+      <ColumnRef name="R_CAU_DOC_GEN_RIG_PREL"/>
+    </Constraint>
+    <Constraint name="RelCauDocRigRiallP" refschema="THIP" reftable="CAU_DOCGNR_RIG" schema="THIPPERS" ondelete="Restrict">
+      <ColumnRef name="ID_AZIENDA"/>
+      <ColumnRef name="R_CAU_DOC_RIALL_RIG_RETPOS"/>
+    </Constraint>
+    <Constraint name="RelCauDocRigRiallR" refschema="THIP" reftable="CAU_DOCGNR_RIG" schema="THIPPERS" ondelete="Restrict">
+      <ColumnRef name="ID_AZIENDA"/>
+      <ColumnRef name="R_CAU_DOC_RIALL_RIG_RETNEG"/>
+    </Constraint>
+    <Constraint name="RelCauDocRigVers_1" refschema="THIP" reftable="CAU_DOCGNR_RIG" schema="THIPPERS" ondelete="Restrict">
+      <ColumnRef name="ID_AZIENDA"/>
+      <ColumnRef name="R_CAU_DOC_GEN_RIG_VERS"/>
+    </Constraint>
+    <Constraint name="RelCauDocTrasf_502" refschema="THIP" reftable="CAU_DOCTRA" schema="THIPPERS" ondelete="Restrict">
+      <ColumnRef name="ID_AZIENDA"/>
+      <ColumnRef name="R_CAU_TES_DOC_TRA"/>
+    </Constraint>
+    <Constraint name="RelSerieDocGen_154" refschema="THIP" reftable="NUM_SERIE" schema="THIPPERS" ondelete="Restrict">
+      <ColumnRef name="ID_AZIENDA"/>
+      <ColumnRef name="R_NUMERATORE_DOC_GEN"/>
+      <ColumnRef name="R_SERIE_DOC_GEN"/>
+    </Constraint>
+    <Constraint name="RelSerieDocRiall_3" refschema="THIP" reftable="NUM_SERIE" schema="THIPPERS" ondelete="Restrict">
+      <ColumnRef name="ID_AZIENDA"/>
+      <ColumnRef name="R_NUMERATORE_DOC_RIALL"/>
+      <ColumnRef name="R_SERIE_DOC_RIALL"/>
+    </Constraint>
+    <Constraint name="RelSerieDocTrasf_1" refschema="THIP" reftable="NUM_SERIE" schema="THIPPERS" ondelete="Restrict">
+      <ColumnRef name="ID_AZIENDA"/>
+      <ColumnRef name="R_NUMERATORE_DOC_TRA"/>
+      <ColumnRef name="R_SERIE_DOC_TRA"/>
+    </Constraint>
+  </CreateTable>
+  <CreateIndex schema="THIPPERS" name="YPERS_DATI_MOD_I01" tabschema="THIPPERS" tabname="YPERS_DATI_MODULA" shortname="YPERS__I01" unique="yes">
+    <IndexCol name="ID_AZIENDA" order="Asc"/>
+  </CreateIndex>
+  <AlterTable schema="THIPPERS" name="YPERS_DATI_MODULA">
+    <AddPrimaryKey>
+      <PrimaryKey>
+        <ColumnRef name="ID_AZIENDA"/>
+      </PrimaryKey>
+    </AddPrimaryKey>
+  </AlterTable>
+  <Comment>
+    <CommentTable schema="THIPPERS" name="YPERS_DATI_MODULA" text="Personalizzazione dati Modula">
+      <CommentColumn name="ID_AZIENDA" text="codice azienda"/>
+      <CommentColumn name="R_SERIE_DOC_TRA" text="Serie doc. trasf."/>
+      <CommentColumn name="R_CAU_TES_DOC_TRA" text="Causale doc. trasf. tes."/>
+      <CommentColumn name="R_NUMERATORE_DOC_TRA" text="Numeratore doc. trasf."/>
+      <CommentColumn name="R_SERIE_DOC_GEN" text="Serie doc. gen."/>
+      <CommentColumn name="R_NUMERATORE_DOC_GEN" text="Numeratore doc. gen."/>
+      <CommentColumn name="R_CAU_DOC_GEN" text="Causale doc. gen."/>
+      <CommentColumn name="R_CAU_DOC_GEN_RIG_VERS" text="Causale riga doc. gen. versamento"/>
+      <CommentColumn name="R_CAU_DOC_GEN_RIG_PREL" text="Causale riga doc. gen. prelievo"/>
+      <CommentColumn name="R_SERIE_DOC_RIALL" text="Serie doc. riallineamento"/>
+      <CommentColumn name="R_NUMERATORE_DOC_RIALL" text="Numeratore doc. riallineamento"/>
+      <CommentColumn name="R_CAU_DOC_RIALL" text="Causale doc. riallineamento"/>
+      <CommentColumn name="R_CAU_DOC_RIALL_RIG_RETPOS" text="Causale riga doc. riall. rett. positiva"/>
+      <CommentColumn name="R_CAU_DOC_RIALL_RIG_RETNEG" text="Causale riga doc. riall. rett. negativa"/>
+    </CommentTable>
+    <CommentIndex schema="THIPPERS" name="YPERS_DATI_MOD_I01" text="Primary Key"/>
+  </Comment>
+  <Grant schema="THIPPERS" name="YPERS_DATI_MODULA"/>
+</TDDML>

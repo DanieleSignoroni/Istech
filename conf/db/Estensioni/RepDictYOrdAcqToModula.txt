@@ -1,0 +1,8 @@
+<B>2024-02-27 15:03:05</B>
+<BR>Creato un nuovo folder : <B><I>W:\PthDev\Projects\Panthera\Istech\conf\db\Estensioni</I></B>
+<BR>Il file <B><I>W:\PthDev\Projects\Panthera\Istech\conf\db\Estensioni\TDDML.dtd</I></B> e creato
+<BR>Il file <B>W:\PthDev\Projects\Panthera\Istech\conf\db\Estensioni\00006\tddml\6_DROP_YORD_ACQ_TO_MODULA.TDDML</B> e' stato generato correttamente.
+<BR>Il dizionario <B>YORD_ACQ_TO_MODULA</B> è stato creato
+<BR>Il file <B>W:\PthDev\Projects\Panthera\Istech\conf\db\Estensioni\00006\tddml\6_YORD_ACQ_TO_MODULA.TDDML</B> e' stato generato correttamente.
+<BR>Il file <B>W:\PthDev\Projects\Panthera\Istech\conf\db\Estensioni\00006\tddml\6_CONSTRAINT.TDDML</B> e' stato generato correttamente.
+<BR><B>La generazione tabella è completata con successo</B><BR>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE TDDML SYSTEM "../../../TDDML.dtd">
+<TDDML>
+  <!-- YPANTH_TO_MODULA (YPANTH_): Panthera to Modula; -->
+  <CreateTable schema="THIPPERS" name="YPANTH_TO_MODULA" shortname="YPANTH_">
+    <Column name="ID_AZIENDA" shortname="ID_AZIENDA" type="char" length="3" nullable="no"/>
+    <Column name="STATO" shortname="STATO" type="char" length="1" nullable="no"/>
+    <Column name="R_UTENTE_CRZ" shortname="R_UTENTE_C" type="char" length="20" nullable="yes"/>
+    <Column name="TIMESTAMP_CRZ" shortname="TIMESTAMP_" type="timestamp" nullable="no" default="CURRENT TIMESTAMP"/>
+    <Column name="R_UTENTE_AGG" shortname="R_UTENTE_A" type="char" length="20" nullable="yes"/>
+    <Column name="TIMESTAMP_AGG" shortname="TIMESTAMP0" type="timestamp" nullable="no" default="CURRENT TIMESTAMP"/>
+    <Column name="TIPO_DOC" shortname="TIPO_DOC" type="char" length="1" nullable="no" default="V"/>
+    <Column name="ID_ANNO_DOC" shortname="ID_ANNO_DO" type="char" length="6" nullable="no"/>
+    <Column name="ID_NUMERO_DOC" shortname="ID_NUMERO_" type="char" length="10" nullable="no"/>
+    <Column name="ID_RIGA_DOC" shortname="ID_RIGA_DO" type="integer" nullable="no"/>
+    <Column name="ID_DET_RIGA_DOC" shortname="ID_DET_RIG" type="integer" nullable="no"/>
+    <Column name="TIPO_MOV" shortname="TIPO_MOV" type="char" length="1" nullable="no" default="V"/>
+    <Column name="QTA_EVASA_UM_PRM" shortname="QTA_EVASA_" type="decimal" length="19" scale="6" nullable="yes"/>
+  </CreateTable>
+  <CreateIndex schema="THIPPERS" name="YPANTH_TO_MODU_I01" tabschema="THIPPERS" tabname="YPANTH_TO_MODULA" shortname="YPANTH_I01" unique="yes">
+    <IndexCol name="ID_AZIENDA" order="Asc"/>
+    <IndexCol name="TIPO_DOC" order="Asc"/>
+    <IndexCol name="ID_ANNO_DOC" order="Asc"/>
+    <IndexCol name="ID_NUMERO_DOC" order="Asc"/>
+    <IndexCol name="ID_RIGA_DOC" order="Asc"/>
+    <IndexCol name="ID_DET_RIGA_DOC" order="Asc"/>
+  </CreateIndex>
+  <AlterTable schema="THIPPERS" name="YPANTH_TO_MODULA">
+    <AddPrimaryKey>
+      <PrimaryKey>
+        <ColumnRef name="ID_AZIENDA"/>
+        <ColumnRef name="TIPO_DOC"/>
+        <ColumnRef name="ID_ANNO_DOC"/>
+        <ColumnRef name="ID_NUMERO_DOC"/>
+        <ColumnRef name="ID_RIGA_DOC"/>
+        <ColumnRef name="ID_DET_RIGA_DOC"/>
+      </PrimaryKey>
+    </AddPrimaryKey>
+  </AlterTable>
+  <Comment>
+    <CommentTable schema="THIPPERS" name="YPANTH_TO_MODULA" text="Panthera to Modula">
+      <CommentColumn name="ID_AZIENDA" text="Azienda"/>
+      <CommentColumn name="STATO" text="Stato"/>
+      <CommentColumn name="R_UTENTE_CRZ" text="Utente creazione"/>
+      <CommentColumn name="TIMESTAMP_CRZ" text="Timestamp creazione"/>
+      <CommentColumn name="R_UTENTE_AGG" text="Utente ultima modifica"/>
+      <CommentColumn name="TIMESTAMP_AGG" text="Timestamp ultima modifica"/>
+      <CommentColumn name="TIPO_DOC" text="Tipo documento"/>
+      <CommentColumn name="ID_ANNO_DOC" text="anno doc"/>
+      <CommentColumn name="ID_NUMERO_DOC" text="numero doc"/>
+      <CommentColumn name="ID_RIGA_DOC" text="riga doc"/>
+      <CommentColumn name="ID_DET_RIGA_DOC" text="det riga doc"/>
+      <CommentColumn name="TIPO_MOV" text="Tipo movimento"/>
+      <CommentColumn name="QTA_EVASA_UM_PRM" text="Qta evasa UM Prm"/>
+    </CommentTable>
+    <CommentIndex schema="THIPPERS" name="YPANTH_TO_MODU_I01" text="Primary Key"/>
+  </Comment>
+  <Grant schema="THIPPERS" name="YPANTH_TO_MODULA"/>
+</TDDML>

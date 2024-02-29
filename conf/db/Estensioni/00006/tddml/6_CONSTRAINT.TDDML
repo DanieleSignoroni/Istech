@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE TDDML SYSTEM "../../../TDDML.dtd">
+<TDDML>
+  <!-- YORD_ACQ_TO_MODULA (YORD_AC) -->
+  <AlterTable schema="THIPPERS" name="YORD_ACQ_TO_MODULA">
+    <AddConstraint>
+      <Constraint name="Azienda_1982051104" refschema="THIP" reftable="AZIENDE_ESTESE" schema="THIPPERS" ondelete="Restrict">
+        <ColumnRef name="ID_AZIENDA"/>
+      </Constraint>
+      <Constraint name="RelArticolo_198518" refschema="THIP" reftable="ARTICOLI" schema="THIPPERS" ondelete="Restrict">
+        <ColumnRef name="ID_AZIENDA"/>
+        <ColumnRef name="R_ARTICOLO"/>
+      </Constraint>
+    </AddConstraint>
+  </AlterTable>
+</TDDML>

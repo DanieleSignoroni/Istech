@@ -1,0 +1,37 @@
+<tfml>
+  <generator type="form"/>
+  <form classHdr="YPersDatiModula"
+    name="YPersDatiModulaForm"
+    locktype="nolock"
+    errorList="yes" menubar="yes" toolbar="yes" submitReset="none"
+    jsLibraryName="it/istech/thip/base/modula/YPersDatiModula.js"
+    onLoadPresent="yes"
+    header="com.thera.thermfw.common.Header.jsp"
+    footer="com.thera.thermfw.common.Footer.jsp">
+    <menubar  name="myMenuBar">
+      <import file="com/thera/thermfw/common/defObjMenu.tfml"/>
+    </menubar>
+    <toolbar name="myToolBar" imgwidth="16" imgheight="16">
+      <import file="com/thera/thermfw/common/defObjMenu.tfml"/>
+    </toolbar>
+    <tabbed name="mytabbed" height="100%" width="100%">
+      <tab name="tab1" resourceFile="it.istech.thip.base.modula.resources.YPersDatiModula" resourceID="tab1">
+        <multisearchform name="RelSerieDocTrasf" classRD="RelSerieDocTrasf" additionalfields="1"/>
+        <multisearchform name="RelCauDocTrasf" classRD="RelCauDocTrasf"/>
+      </tab>
+      <tab name="tab2" resourceFile="it.istech.thip.base.modula.resources.YPersDatiModula" resourceID="tab2">
+        <multisearchform name="RelSerieDocGen" classRD="RelSerieDocGen" additionalfields="1"/>
+        <multisearchform name="RelCauDocGen" classRD="RelCauDocGen"/>
+        <multisearchform name="RelCauDocRigVers" classRD="RelCauDocRigVers"/>
+        <multisearchform name="RelCauDocRigPrel" classRD="RelCauDocRigPrel"/>
+      </tab>
+      <tab name="tab3" resourceFile="it.istech.thip.base.modula.resources.YPersDatiModula" resourceID="tab3">
+        <multisearchform name="RelSerieDocRiall" classRD="RelSerieDocRiall" additionalfields="1"/>
+        <multisearchform name="RelCauDocRiall" classRD="RelCauDocRiall"/>
+        <multisearchform name="RelCauDocRigRiallPos" classRD="RelCauDocRigRiallPos"/>
+        <multisearchform name="RelCauDocRigRiallRetNeg" classRD="RelCauDocRigRiallRetNeg"/>
+      </tab>
+    </tabbed>
+  </form>
+</tfml>
+

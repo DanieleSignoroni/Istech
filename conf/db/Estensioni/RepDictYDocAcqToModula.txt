@@ -1,0 +1,6 @@
+<B>2024-02-29 09:24:18</B>
+<BR>Il file <B>W:\PthDev\Projects\Panthera\Istech\conf\db\Estensioni\00007\tddml\7_DROP_YDOC_ACQ_TO_MODULA.TDDML</B> e' stato generato correttamente.
+<BR>Il dizionario <B>YDOC_ACQ_TO_MODULA</B> è stato creato
+<BR>Il file <B>W:\PthDev\Projects\Panthera\Istech\conf\db\Estensioni\00007\tddml\7_YDOC_ACQ_TO_MODULA.TDDML</B> e' stato generato correttamente.
+<BR>Il file <B>W:\PthDev\Projects\Panthera\Istech\conf\db\Estensioni\00007\tddml\7_CONSTRAINT.TDDML</B> e' stato generato correttamente.
+<BR><B>La generazione tabella è completata con successo</B><BR>

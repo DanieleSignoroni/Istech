@@ -1,0 +1,3 @@
+<B>2024-02-27 15:03:13</B>
+<BR>Il file <B>YOrdAcqToModula.jsp</B> è stato generato correttamente nel cartela <B>W:\PthDev\Projects\Panthera\Istech\conf\db\Estensioni\00006\websrc\it\istech\thip\base\modula</B><BR>Il file <B>YOrdAcqToModula.jsp</B> è stato copiato nel classpath
+<BR><B>Generazione JSP è completata con successo</B><BR>
