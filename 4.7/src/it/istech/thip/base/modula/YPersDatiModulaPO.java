@@ -238,26 +238,26 @@ public static Vector retrieveList(String where, String orderBy, boolean optimist
 
   public void setRSerieDocGen(String rSerieDocGen) {
     String key = iRelseriedocgen.getKey();
-    iRelseriedocgen.setKey(KeyHelper.replaceTokenObjectKey(key , 2, rSerieDocGen));
+    iRelseriedocgen.setKey(KeyHelper.replaceTokenObjectKey(key ,3, rSerieDocGen));
     setDirty();
   }
 
   public String getRSerieDocGen() {
     String key = iRelseriedocgen.getKey();
-    String objRSerieDocGen = KeyHelper.getTokenObjectKey(key,2);
+    String objRSerieDocGen = KeyHelper.getTokenObjectKey(key,3);
     return objRSerieDocGen;
     
   }
 
   public void setRNumeratoreDocGen(String rNumeratoreDocGen) {
     String key = iRelseriedocgen.getKey();
-    iRelseriedocgen.setKey(KeyHelper.replaceTokenObjectKey(key , 3, rNumeratoreDocGen));
+    iRelseriedocgen.setKey(KeyHelper.replaceTokenObjectKey(key , 2, rNumeratoreDocGen));
     setDirty();
   }
 
   public String getRNumeratoreDocGen() {
     String key = iRelseriedocgen.getKey();
-    String objRNumeratoreDocGen = KeyHelper.getTokenObjectKey(key,3);
+    String objRNumeratoreDocGen = KeyHelper.getTokenObjectKey(key,2);
     return objRNumeratoreDocGen;
   }
 
@@ -431,26 +431,26 @@ public static Vector retrieveList(String where, String orderBy, boolean optimist
 
   public void setRSerieDocRiall(String rSerieDocRiall) {
     String key = iRelseriedocriall.getKey();
-    iRelseriedocriall.setKey(KeyHelper.replaceTokenObjectKey(key , 2, rSerieDocRiall));
+    iRelseriedocriall.setKey(KeyHelper.replaceTokenObjectKey(key , 3, rSerieDocRiall));
     setDirty();
   }
 
   public String getRSerieDocRiall() {
     String key = iRelseriedocriall.getKey();
-    String objRSerieDocRiall = KeyHelper.getTokenObjectKey(key,2);
+    String objRSerieDocRiall = KeyHelper.getTokenObjectKey(key,3);
     return objRSerieDocRiall;
     
   }
 
   public void setRNumeratoreDocRiall(String rNumeratoreDocRiall) {
     String key = iRelseriedocriall.getKey();
-    iRelseriedocriall.setKey(KeyHelper.replaceTokenObjectKey(key , 3, rNumeratoreDocRiall));
+    iRelseriedocriall.setKey(KeyHelper.replaceTokenObjectKey(key , 2, rNumeratoreDocRiall));
     setDirty();
   }
 
   public String getRNumeratoreDocRiall() {
     String key = iRelseriedocriall.getKey();
-    String objRNumeratoreDocRiall = KeyHelper.getTokenObjectKey(key,3);
+    String objRNumeratoreDocRiall = KeyHelper.getTokenObjectKey(key,2);
     return objRNumeratoreDocRiall;
   }
 
