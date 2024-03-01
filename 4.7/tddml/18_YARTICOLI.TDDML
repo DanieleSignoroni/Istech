@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE TDDML SYSTEM "../../../TDDML.dtd">
+<TDDML>
+  <CreateTable schema="THIPPERS" name="YARTICOLI" shortname="YARTICO">
+    <Column name="ID_AZIENDA" shortname="ID_AZIENDA" type="char" length="3" nullable="no"/>
+    <Column name="ID_ARTICOLO" shortname="ID_ARTICOL" type="char" length="25" nullable="no"/>
+    <Column name="ESPORTATO_MODULA" shortname="ESP_MOD" type="char" length="1" nullable="no" default="N"/>
+  </CreateTable>
+  <CreateIndex schema="THIPPERS" name="YARTICOLI_I01" tabschema="THIPPERS" tabname="YARTICOLI" shortname="YARTIC_I01" unique="yes">
+    <IndexCol name="ID_AZIENDA" order="Asc"/>
+    <IndexCol name="ID_ARTICOLO" order="Asc"/>
+  </CreateIndex>
+  <AlterTable schema="THIPPERS" name="YARTICOLI">
+    <AddPrimaryKey>
+      <PrimaryKey>
+        <ColumnRef name="ID_AZIENDA"/>
+        <ColumnRef name="ID_ARTICOLO"/>
+      </PrimaryKey>
+    </AddPrimaryKey>
+  </AlterTable>
+  <Comment>
+    <CommentTable schema="THIPPERS" name="YARTICOLI" text="ArticoloDatiMagaz">
+      <CommentColumn name="ID_AZIENDA" text="Codice azienda"/>
+      <CommentColumn name="ID_ARTICOLO" text="Codice articolo"/>
+      <CommentColumn name="ESPORTATO_MODULA" text="Esportato verso modula?"/>
+    </CommentTable>
+    <CommentIndex schema="THIPPERS" name="YARTICOLI_I01" text="Primary Key"/>
+  </Comment>
+  <Grant schema="THIPPERS" name="YARTICOLI"/>
+</TDDML>

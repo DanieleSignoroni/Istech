@@ -67,6 +67,17 @@ public class YRiallineamentoGiacenzeModula extends BatchRunnable implements Auth
 
 	public static final String STMT_SELECT_GIACENZA = " SELECT * "
 			+ " FROM "+YExpGiacenze.TABLE_NAME+" ";
+	
+	public static final String STMT_DELETE_GIACENZA_MODULA = "DELETE FROM "+YExpGiacenze.TABLE_NAME+" "
+			+ "WHERE "+YExpGiacenze.GIA_DATAORAS1+" = ? "
+			+ "AND "+YExpGiacenze.GIA_DATAORAS2+" = ?  "
+			+ "AND "+YExpGiacenze.GIA_ARTICOLO+" = ? "
+			+ "AND "+YExpGiacenze.GIA_SUB1+" = ? "
+			+ "AND "+YExpGiacenze.GIA_SUB2+" = ? "
+			+ "AND "+YExpGiacenze.GIA_STAMATE+" = ? "
+			+ "AND "+YExpGiacenze.GIA_TIPOCONF+" = ? "
+			+ "AND "+YExpGiacenze.GIA_DSCAD1+" = ? "
+			+ "AND "+YExpGiacenze.GIA_DSCAD2+" = ?";
 
 	@Override
 	protected boolean run() {
@@ -101,6 +112,7 @@ public class YRiallineamentoGiacenzeModula extends BatchRunnable implements Auth
 					docMagGen = creaDocumentoDiMagazzinoGenerico();
 					docMagGen.setAlfanumRiservatoUtente1(TimeUtils.getCurrentDate().toString());
 					docMagGen.setAlfanumRiservatoUtente2("DOC_RIA_GIAC_MODULA");
+					docMagGen.setNota("Riallineamento giacenze Panthera - Modula");
 					rcTestata = docMagGen.save();
 				}
 				if(rcTestata >= BODataCollector.OK) {
@@ -125,7 +137,13 @@ public class YRiallineamentoGiacenzeModula extends BatchRunnable implements Auth
 						try {
 							rc = docMagGen.save();
 							if(rc >= BODataCollector.OK) {
-								ConnectionManager.commit();
+								if(!puliziaTabelleModula(giacDaRiallineare)) {
+									output.println("Ci sono stati degli errori nel pulire la tabella delle giacenze di Modula \n"
+											+ "il processo viene fermato e il documento rollBacckato!");
+									ConnectionManager.rollback();
+								}else {
+									ConnectionManager.commit();
+								}
 							}else {
 								ConnectionManager.rollback();
 								output.println("Impossibile salvare il documento di trasferimento, errore: \n"
@@ -151,6 +169,47 @@ public class YRiallineamentoGiacenzeModula extends BatchRunnable implements Auth
 			}
 		}else {
 			//non e' stata trovata nessuna riga da riallineare
+		}
+		return false;
+	}
+
+	protected boolean puliziaTabelleModula(HashMap<String, Object[]> giacDaRiallineare) {
+		Connection connection = null;
+		try {
+			connection = YModulaConnection.getModulaConnection();
+			try (
+					Connection conn = connection;
+					) {
+				conn.setAutoCommit(false); 
+				int ris1 = 0;
+				for (Map.Entry<String, Object[]> entry : giacDaRiallineare.entrySet()) {
+					Object[] valori = entry.getValue();
+					YExpGiacenze giacenza = (YExpGiacenze) valori[2];
+					PreparedStatement ps = conn.prepareStatement(STMT_DELETE_GIACENZA_MODULA);
+					ps.setString(1, giacenza.getGia_DataOraS1());
+					ps.setString(2, giacenza.getGia_DataOraS2());
+					ps.setString(3, giacenza.getGia_Articolo());
+					ps.setString(4, giacenza.getGia_Sub1());
+					ps.setString(5, giacenza.getGia_Sub2());
+					ps.setString(6, giacenza.getGia_Stamate());
+					ps.setString(7, giacenza.getGia_TipoConf());
+					ps.setString(8, giacenza.getGia_Dscad1());
+					ps.setString(9, giacenza.getGia_Dscad2());
+					int res = ps.executeUpdate();
+					if(res < 0) {
+						ris1 = res;
+					}
+				}
+				if (ris1 > 0) {
+					conn.commit();
+					return true;
+				} else {
+					conn.rollback(); 
+					return false;
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace(Trace.excStream);
 		}
 		return false;
 	}
@@ -259,11 +318,10 @@ public class YRiallineamentoGiacenzeModula extends BatchRunnable implements Auth
 
 	protected HashMap<String, Object[]> recuperaGiacenzeDaRiallineare() {
 		List<YExpGiacenze> lst = getListaExpGiacenze();
-		HashMap<String, Object[]> risultato = new HashMap<String, Object[]>();
+		HashMap<String, Object[]> risultato = new HashMap<>();
 		for (YExpGiacenze giacenza : lst) {
 			Articolo articolo = checkArticolo(giacenza);
-			if(articolo != null
-					&& (articolo.getClasseA() != null && articolo.getIdClasseA().equals("MO")) ) {
+			if (articolo != null && "MO".equals(articolo.getIdClasseA())) {
 				SaldoMag saldoBase = getSaldoBaseMagazzino(Azienda.getAziendaCorrente(),
 						"MOD", articolo.getIdArticolo(), null, null, null);
 				if(saldoBase == null) {
@@ -272,10 +330,10 @@ public class YRiallineamentoGiacenzeModula extends BatchRunnable implements Auth
 						//o va fatta rettifica positiva o negativa
 						if(giacenza.getGia_Giac().compareTo(BigDecimal.ZERO) > 0) {
 							//positiva di tutto
-							risultato.put(articolo.getIdArticolo(), new Object[] {RETTIFICA_POSITIVA,giacenza.getGia_Giac()});
+							risultato.put(articolo.getIdArticolo(), new Object[] {RETTIFICA_POSITIVA,giacenza.getGia_Giac(),giacenza});
 						}else {
 							//negativa di tutto
-							risultato.put(articolo.getIdArticolo(), new Object[] {RETTIFICA_NEGATIVA,giacenza.getGia_Giac()});
+							risultato.put(articolo.getIdArticolo(), new Object[] {RETTIFICA_NEGATIVA,giacenza.getGia_Giac(),giacenza});
 						}
 					}
 				}else {
@@ -285,11 +343,11 @@ public class YRiallineamentoGiacenzeModula extends BatchRunnable implements Auth
 						if(giacenza.getGia_Giac().compareTo(qtaGiac) > 0) {
 							//positiva solo della discreapanza
 							discreapanza = giacenza.getGia_Giac().subtract(qtaGiac);
-							risultato.put(articolo.getIdArticolo(), new Object[] {RETTIFICA_POSITIVA,discreapanza});
+							risultato.put(articolo.getIdArticolo(), new Object[] {RETTIFICA_POSITIVA,discreapanza,giacenza});
 						}else {
 							//negativa solo della discrepanza
 							discreapanza = qtaGiac.subtract(giacenza.getGia_Giac());
-							risultato.put(articolo.getIdArticolo(), new Object[] {RETTIFICA_NEGATIVA,discreapanza});
+							risultato.put(articolo.getIdArticolo(), new Object[] {RETTIFICA_NEGATIVA,discreapanza,giacenza});
 						}
 					}else {
 						//le giacenze sono allineate
