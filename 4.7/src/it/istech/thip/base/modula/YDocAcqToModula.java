@@ -2,41 +2,27 @@ package it.istech.thip.base.modula;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.thera.thermfw.base.Trace;
 import com.thera.thermfw.common.*;
-import com.thera.thermfw.persist.CachedStatement;
 import com.thera.thermfw.persist.ConnectionManager;
 import com.thera.thermfw.persist.Factory;
 import com.thera.thermfw.persist.KeyHelper;
 import com.thera.thermfw.persist.PersistentObject;
 
 import it.istech.thip.acquisti.documentoAC.YDocumentoAcqRigaPrm;
+import it.istech.thip.base.modula.esportazione.YGestoreEsportazioneModula;
 import it.sicons.ag.produzione.mancanti.ParametriUtils;
-import it.thera.thip.acquisti.documentoAC.DocumentoAcqRigaSec;
 import it.thera.thip.acquisti.documentoAC.DocumentoAcquisto;
 import it.thera.thip.acquisti.documentoAC.DocumentoAcquistoRiga;
-import it.thera.thip.base.articolo.Articolo;
-import it.thera.thip.base.articolo.ArticoloDatiIdent;
+import it.thera.thip.acquisti.generaleAC.TipoDocumentoAcq;
 import it.thera.thip.magazzino.saldi.SaldoMag;
-import it.thera.thip.vendite.generaleVE.TipoDocumento;
 import it.thera.thip.vendite.proposteEvasione.CreaMessaggioErrore;
 
 public class YDocAcqToModula extends YDocAcqToModulaPO {
-
-	public static String STMT_INSERT_IMP_ORDINI = "INSERT INTO [dbo].[IMP_ORDINI] ([ORD_ORDINE],[ORD_DES],[ORD_TIPOOP],[ORD_ERRORE]) "
-			+ " VALUES (?,?,?,?) ";
-
-	public static CachedStatement cs_insert_imp_ordini = new CachedStatement(STMT_INSERT_IMP_ORDINI);
-
-	public static String STMT_INSERT_IMP_ORDINI_RIG = "INSERT INTO [dbo].[IMP_ORDINI_RIGHE] ([RIG_ORDINE],[RIG_ARTICOLO],[RIG_HOSTINF],[RIG_QTAR],[RIG_ATTR1],[RIG_ERRORE]) "
-			+ " VALUES (?,?,?,?,?,?) ";
-
-	public static CachedStatement cs_insert_imp_ordini_rig = new CachedStatement(STMT_INSERT_IMP_ORDINI_RIG);
 
 	public ErrorMessage checkDelete() {
 		return null;
@@ -55,11 +41,16 @@ public class YDocAcqToModula extends YDocAcqToModulaPO {
 		vTm.setRDetRigaDoc(riga.getDettaglioRigaDocumento());
 		vTm.setRArticolo(riga.getIdArticolo());
 
-		vTm.setQtaOriginale(riga.getQtaRicevuta().getQuantitaInUMRif());
+		//Se acquisto allora la quantita' e' la ricevuta
+		//Se e' reso fornitore la quantita' e' QTA_ACQ_UM_PRM
+		if(((DocumentoAcquisto)riga.getTestata()).getTipoDocumento() == TipoDocumentoAcq.ACQUISTO)
+			vTm.setQtaOriginale(riga.getQtaRicevuta().getQuantitaInUMRif());
+		else if(((DocumentoAcquisto)riga.getTestata()).getTipoDocumento() == TipoDocumentoAcq.RESO_FORNITORE) {
+			vTm.setQtaOriginale(riga.getQtaInUMPrm());
+		}
 
 		BigDecimal qtaGiaEvasa = vTm.cercaQtaGiaEvasa();
 		vTm.setQtaEvasa(qtaGiaEvasa); //cercare qta evasa in YPANTH_TO_MODULA
-
 
 		vTm.setQtaResidua(vTm.getQtaOriginale().subtract(vTm.getQtaEvasa()));
 		vTm.setQtaDaEvadere(vTm.getQtaResidua());
@@ -95,7 +86,7 @@ public class YDocAcqToModula extends YDocAcqToModulaPO {
 	public static void creaRighePerDocumentoAcquisto(String keyDocAcq) throws SQLException {
 		DocumentoAcquisto docAcq = (DocumentoAcquisto) DocumentoAcquisto.elementWithKey(DocumentoAcquisto.class, keyDocAcq, 0);
 		if(docAcq != null
-				&& docAcq.getTipoDocumento() == TipoDocumento.FATTURA) {
+				&& (docAcq.getTipoDocumento() == TipoDocumentoAcq.ACQUISTO || docAcq.getTipoDocumento() == TipoDocumentoAcq.RESO_FORNITORE) ) {
 			List<YDocAcqToModula> righeOrdAcqToModula = new ArrayList<YDocAcqToModula>();
 			List<YDocumentoAcqRigaPrm> righe = docAcq.getRighe();
 			for(YDocumentoAcqRigaPrm riga : righe) {
@@ -103,34 +94,9 @@ public class YDocAcqToModula extends YDocAcqToModulaPO {
 						&& !riga.checkIsRigaMerceAValore() 
 						&& riga.checkIsMerceOrOmaggio() 
 						&& riga.checkIsClasseAMO()
-						&& riga.checkResiduoPresente()
 						&& !riga.isGestioneCaliTriangulazione()) {
-					Articolo art = riga.getArticolo();
-					switch(art.getTipoParte()) {
-					case ArticoloDatiIdent.KIT_NON_GEST:
-						/*
-						 Se un riga primaria è intestata ad un articolo che ha tipo parte “kit non gestito a
-						 magazzino” allora la riga primaria non viene mostrata. Vengono mostrate però le
-						 relative righe secondarie
-						 */
-						List<DocumentoAcqRigaSec> righeSec = riga.getRigheSecondarie();
-						for(DocumentoAcqRigaSec rigaSec : righeSec) {
-							YDocAcqToModula rigaOrdVenToModula = new YDocAcqToModula(rigaSec);
-							righeOrdAcqToModula.add(rigaOrdVenToModula);
-						}
-						break;					
-					case ArticoloDatiIdent.KIT_GEST:
-						/*
-						Se un riga primaria è intestata ad un articolo che ha tipo parte “kit gestito a magazzino”
-						allora la riga primaria viene mostrata. Vengono però omesse le relative righe
-						secondarie.
-						 */
-						YDocAcqToModula rigaOrdVenToModula = new YDocAcqToModula(riga);
-						righeOrdAcqToModula.add(rigaOrdVenToModula);
-						break;
-					default:
-						break;
-					}
+					YDocAcqToModula rigaDocAcqToModula = new YDocAcqToModula(riga);
+					righeOrdAcqToModula.add(rigaDocAcqToModula);
 				}
 			}
 			if(!righeOrdAcqToModula.isEmpty())
@@ -164,7 +130,7 @@ public class YDocAcqToModula extends YDocAcqToModulaPO {
 	/**
 	 * @author Daniele Signoroni
 	 * <p>Prima stesura:<br>
-	 * L'utente una volta selezionati N {@link YDocAcqToModula} record dalla griglia, vuole invarli a modula.<br>
+	 * L'utente una volta selezionati N {@link YOrdVenToModula} record dalla griglia, vuole invarli a modula.<br>
 	 * Viene quindi inserito un record per la testata tramite {@link #STMT_INSERT_IMP_ORDINI}.<br>
 	 * Per ogni riga selezionata invece viene inserito un record in riga {@link #STMT_INSERT_IMP_ORDINI_RIG}.<br>
 	 * </p>
@@ -175,31 +141,34 @@ public class YDocAcqToModula extends YDocAcqToModulaPO {
 		ErrorMessage em = null;
 		Connection connection = null;
 		try {
-			connection = YModulaConnection.getModulaConnection();
-			if(connection != null) {
-				YDocAcqToModula vTm = null;
+			List<YDocAcqToModula> rows = getListaRigheDaInviare(objectKeys);
+			if(rows.size() > 0) {
+				String[] keyParts = KeyHelper.unpackObjectKey(objectKeys[0]);
+				DocumentoAcquisto docAcq = getDocumentoAcquistoDB(keyParts[0], keyParts[1], keyParts[2]);
 				String numeroListaModula = null;
-				if(objectKeys.length > 0) {
-					vTm = YDocAcqToModula.elementWithKey(objectKeys[0], 0);
+				connection = YModulaConnection.getModulaConnection();
+				if(connection != null) {
 					numeroListaModula = ParametriUtils.getNextNumeratorLista();
-					em = inviaTestataAModula(numeroListaModula,connection,vTm);
-				}
-				if(em == null) {
-					for(String key : objectKeys) {
-						YDocAcqToModula riga = YDocAcqToModula.elementWithKey(key, 0);
-						if(riga.getQtaDaEvadere().compareTo(BigDecimal.ZERO) == 1) {
-							em = riga.inviaAModula(numeroListaModula, connection);
+					em = inviaTestataAModula(numeroListaModula,connection,rows.get(0), docAcq);
+					if(em == null) {
+						for (YDocAcqToModula riga : rows) {
+							em = riga.inviaAModula(numeroListaModula, connection,docAcq);
 							if(em != null) {
 								return em;
 							}
 						}
+						if(em == null) {
+							ConnectionManager.commit();
+							connection.commit();
+						}
+						YOrdVenToModula.cancellaRigheOrdineVendita(KeyHelper.buildObjectKey(new String[] {rows.get(0).getIdAzienda(),rows.get(0).getRAnnoDocAcq(),rows.get(0).getRNumeroDocAcq()}));
+					}else {
+						return em;
 					}
-				}else {
-					return em;
 				}
-				YDocAcqToModula.cancellaRigheDocumentoAcquisto(KeyHelper.buildObjectKey(new String[] {vTm.getIdAzienda(),vTm.getRAnnoDocAcq(),vTm.getRNumeroDocAcq()}));
 			}else {
-				//errore di connessione
+				em = new ErrorMessage("YSOF3_001","Non e' presente nessuna riga da esportare, le quantita' sono gia' state evase completamente!");
+				return em;
 			}
 		}catch (SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
 			if(e instanceof ModulaConnectionException)
@@ -219,13 +188,26 @@ public class YDocAcqToModula extends YDocAcqToModulaPO {
 		return em;
 	}
 
-	public static ErrorMessage inviaTestataAModula(String numeroListaModula, Connection connection, YDocAcqToModula vTm) {
-		ErrorMessage em = null;
-		em = scriviTestataDBModula(numeroListaModula, connection,vTm);
-		return em;
+	public static List<YDocAcqToModula> getListaRigheDaInviare(String[] keys){
+		List<YDocAcqToModula> list = new ArrayList<>();
+		for(String key : keys) {
+			try {
+				YDocAcqToModula riga = YDocAcqToModula.elementWithKey(key, 0);
+				if(riga.getQtaDaEvadere().compareTo(BigDecimal.ZERO) == 1) {
+					list.add(riga);
+				}
+			}catch (SQLException e) {
+				e.printStackTrace(Trace.excStream);
+			}
+		}
+		return list;
 	}
 
-	public ErrorMessage inviaAModula(String numeroListaModula,Connection connection) throws SQLException {
+	public static ErrorMessage inviaTestataAModula(String numeroListaModula, Connection connection, YDocAcqToModula vTm,DocumentoAcquisto docAcq) {
+		return scriviTestataDBModula(numeroListaModula, connection,vTm,docAcq);
+	}
+
+	public ErrorMessage inviaAModula(String numeroListaModula,Connection connection, DocumentoAcquisto docAcq) throws SQLException {
 		ErrorMessage em = null;
 		YPanthToModula pTm = (YPanthToModula) Factory.createObject(YPanthToModula.class);
 		pTm.setIdAzienda(this.getIdAzienda());
@@ -238,7 +220,11 @@ public class YDocAcqToModula extends YDocAcqToModulaPO {
 		if(!exists) {
 			pTm.setQtaEvasaUmPrm(BigDecimal.ZERO);
 		}
-		pTm.setTipoMov(TipoMovimentoModula.VERSAMENTO);
+		if(docAcq.getTipoDocumento() == TipoDocumentoAcq.ACQUISTO) {
+			pTm.setTipoMov('V');
+		}else if(docAcq.getTipoDocumento() == TipoDocumentoAcq.RESO_FORNITORE) {
+			pTm.setTipoMov('P');
+		}
 		pTm.setQtaEvasaUmPrm(pTm.getQtaEvasaUmPrm().add(this.getQtaDaEvadere()));
 		int rc = pTm.save();
 		if(rc < 0)
@@ -252,7 +238,6 @@ public class YDocAcqToModula extends YDocAcqToModulaPO {
 			} catch (Exception e) {
 				e.printStackTrace(Trace.excStream);
 			}
-			ConnectionManager.commit();
 		}
 		return null;		
 	}
@@ -262,58 +247,47 @@ public class YDocAcqToModula extends YDocAcqToModulaPO {
 		String lineNumber = this.getRRigaDoc().toString().concat("#").concat(this.getRDetRigaDoc().toString());
 		String idArticolo = this.getRArticolo();
 		BigDecimal qta = this.getQtaDaEvadere();
-		try (
-				Connection conn = connection;
-				PreparedStatement ps = cs_insert_imp_ordini_rig.getStatement()
-				) {
-			ps.setString(1, numeroListaModula);
-			ps.setString(2, idArticolo);
-			ps.setString(3, null);
-			ps.setBigDecimal(4, qta);
-			ps.setString(5, lineNumber);
-			ps.setString(6, null);
-			int ris = ps.executeUpdate();
-			if(ris > 0) {
-				//connection.commit();
+		int ris;
+		try {
+			ris = YGestoreEsportazioneModula.esportaRigaOrdine(connection, numeroListaModula, idArticolo, null, qta, lineNumber, null);
+			if(ris <= 0) {
+				em = new ErrorMessage("");
 			}
+		} catch (SQLException e) {
+			em = CreaMessaggioErrore.daRcAErrorMessage(-9999, (SQLException) e);
+			e.printStackTrace(Trace.excStream);
 		}
 		return em;
 	}
 
-	protected static ErrorMessage scriviTestataDBModula(String numeroListaModula,Connection connection, YDocAcqToModula vTm){
+	protected static ErrorMessage scriviTestataDBModula(String numeroListaModula,Connection connection, YDocAcqToModula vTm, DocumentoAcquisto docAcq){
 		ErrorMessage em = null;
 		DocumentoAcquisto testata = getDocumentoAcquistoDB(vTm.getIdAzienda(),vTm.getRAnnoDocAcq(),vTm.getRNumeroDocAcq());
 		if(testata == null) {
 			//new error msg testata non trovata
 		}
-		String ragSoc = testata.getFornitore().getIdFornitore();
-		String descrizioneLista = "[V]" + ragSoc.trim().concat(",").concat(testata.getAnnoDocumento().trim()).concat(",").concat(testata.getNumeroDocumento().trim());
-		try (
-				Connection conn = connection;
-				PreparedStatement ps = cs_insert_imp_ordini.getStatement()
-				) {
-			ps.setString(1, numeroListaModula);
-			ps.setString(2, descrizioneLista);
-			ps.setString(3, String.valueOf(TipoMovimentoModula.VERSAMENTO));
-			ps.setString(4, null);
-			int ris = ps.executeUpdate();
-			if(ris > 0) {
-				//connection.commit();
+		String ragSoc = testata.getCliente().getIdCliente();
+		String descrizioneLista = null;
+		if(docAcq.getTipoDocumento() == TipoDocumentoAcq.ACQUISTO) {
+			descrizioneLista = "[V]" + ragSoc.trim().concat(",").concat(testata.getAnnoDocumento().trim()).concat(",").concat(testata.getNumeroDocumento().trim());
+		}else if(docAcq.getTipoDocumento() == TipoDocumentoAcq.RESO_FORNITORE) {
+			descrizioneLista = "[P]" + ragSoc.trim().concat(",").concat(testata.getAnnoDocumento().trim()).concat(",").concat(testata.getNumeroDocumento().trim());
+		}
+		int ris = 0;
+		try {
+			if(docAcq.getTipoDocumento() == TipoDocumentoAcq.ACQUISTO) {
+				ris = YGestoreEsportazioneModula.esportaTestataOrdine(connection, numeroListaModula, descrizioneLista, TipoMovimentoModula.VERSAMENTO, null);
+			}else if(docAcq.getTipoDocumento() == TipoDocumentoAcq.RESO_FORNITORE) {
+				ris = YGestoreEsportazioneModula.esportaTestataOrdine(connection, numeroListaModula, descrizioneLista, TipoMovimentoModula.PRELIEVO, null);
+			}
+			if(ris <= 0) {
+				em = new ErrorMessage("");
 			}
 		} catch (SQLException e) {
-			em = CreaMessaggioErrore.daRcAErrorMessage(9999, e);
+			em = CreaMessaggioErrore.daRcAErrorMessage(-9999, (SQLException) e);
 			e.printStackTrace(Trace.excStream);
 		}
 		return em;
-	}
-
-	protected static YModulaConnection getNewModulaConnection() {
-		try {
-			return new YModulaConnection();
-		} catch (Exception e) {
-			e.printStackTrace(Trace.excStream);
-		}
-		return null;
 	}
 
 	protected static DocumentoAcquisto getDocumentoAcquistoDB(String idAzienda,String idAnnoDoc,String idNumeroDoc) {

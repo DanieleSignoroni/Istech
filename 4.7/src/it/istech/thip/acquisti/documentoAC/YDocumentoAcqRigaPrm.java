@@ -1,7 +1,5 @@
 package it.istech.thip.acquisti.documentoAC;
 
-import java.math.BigDecimal;
-
 import it.thera.thip.acquisti.documentoAC.DocumentoAcqRigaPrm;
 import it.thera.thip.acquisti.generaleAC.CausaleDocumentoRigaAcq;
 import it.thera.thip.base.comuniVenAcq.TipoRiga;
@@ -40,13 +38,4 @@ public class YDocumentoAcqRigaPrm extends DocumentoAcqRigaPrm {
 		return ((CausaleDocumentoRigaAcq)this.getCausaleRiga()).isRigaMerceAValore();
 	}
 
-	/**
-	 * Controllo che esista della qta residua
-	 * @return true se residuo > 0
-	 */
-	public boolean checkResiduoPresente() {
-	    BigDecimal qtaResidua = this.getQuantitaResiduo().getQuantitaInUMRif();
-	    return qtaResidua != null && qtaResidua.compareTo(BigDecimal.ZERO) == 1;
-	}
-	
 }

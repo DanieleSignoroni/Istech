@@ -2,19 +2,18 @@ package it.istech.thip.base.modula;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.thera.thermfw.base.Trace;
 import com.thera.thermfw.common.*;
-import com.thera.thermfw.persist.CachedStatement;
 import com.thera.thermfw.persist.ConnectionManager;
 import com.thera.thermfw.persist.Factory;
 import com.thera.thermfw.persist.KeyHelper;
 import com.thera.thermfw.persist.PersistentObject;
 
+import it.istech.thip.base.modula.esportazione.YGestoreEsportazioneModula;
 import it.sicons.ag.produzione.mancanti.ParametriUtils;
 import it.sicons.thip.venditeIstech.ordineVE.SiOrdineVenditaRigaPrm;
 import it.thera.thip.base.articolo.Articolo;
@@ -26,16 +25,6 @@ import it.thera.thip.vendite.ordineVE.OrdineVenditaRigaSec;
 import it.thera.thip.vendite.proposteEvasione.CreaMessaggioErrore;
 
 public class YOrdVenToModula extends YOrdVenToModulaPO {
-
-	public static String STMT_INSERT_IMP_ORDINI = "INSERT INTO [dbo].[IMP_ORDINI] ([ORD_ORDINE],[ORD_DES],[ORD_TIPOOP],[ORD_ERRORE]) "
-			+ " VALUES (?,?,?,?) ";
-
-	public static CachedStatement cs_insert_imp_ordini = new CachedStatement(STMT_INSERT_IMP_ORDINI);
-
-	public static String STMT_INSERT_IMP_ORDINI_RIG = "INSERT INTO [dbo].[IMP_ORDINI_RIGHE] ([RIG_ORDINE],[RIG_ARTICOLO],[RIG_HOSTINF],[RIG_QTAR],[RIG_ATTR1],[RIG_ERRORE]) "
-			+ " VALUES (?,?,?,?,?,?) ";
-
-	public static CachedStatement cs_insert_imp_ordini_rig = new CachedStatement(STMT_INSERT_IMP_ORDINI_RIG);
 
 	public ErrorMessage checkDelete() {
 		return null;
@@ -127,6 +116,8 @@ public class YOrdVenToModula extends YOrdVenToModulaPO {
 						righeOrdVenToModula.add(rigaOrdVenToModula);
 						break;
 					default:
+						rigaOrdVenToModula = new YOrdVenToModula(riga);
+						righeOrdVenToModula.add(rigaOrdVenToModula);
 						break;
 					}
 				}
@@ -148,7 +139,7 @@ public class YOrdVenToModula extends YOrdVenToModulaPO {
 	public static int cancellaRigheOrdineVendita(String keyOrdVen) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
 		int recordCancellati = 0;
 		String[] c = keyOrdVen.split(KeyHelper.KEY_SEPARATOR);
-		String where = " ID_AZIENDA = '"+c[0]+"' AND R_ANNO_ORD_VEN = '"+c[1]+"' AND R_NUMERO_ORD_VEN = '"+c[2]+"' ";
+		String where = " ID_AZIENDA = '"+c[0]+"' AND "+YOrdVenToModulaTM.R_ANNO_ORD_VEN+" = '"+c[1]+"' AND "+YOrdVenToModulaTM.R_NUMERO_ORD_VEN+" = '"+c[2]+"' ";
 		List<YOrdVenToModula> records = YOrdVenToModula.retrieveList(YOrdVenToModula.class,where, "", false);
 		for(YOrdVenToModula record : records) {
 			record.delete();
@@ -173,31 +164,32 @@ public class YOrdVenToModula extends YOrdVenToModulaPO {
 		ErrorMessage em = null;
 		Connection connection = null;
 		try {
-			connection = YModulaConnection.getModulaConnection();
-			if(connection != null) {
-				YOrdVenToModula vTm = null;
+			List<YOrdVenToModula> rows = getListaRigheDaInviare(objectKeys);
+			if(rows.size() > 0) {
 				String numeroListaModula = null;
-				if(objectKeys.length > 0) {
-					vTm = YOrdVenToModula.elementWithKey(objectKeys[0], 0);
+				connection = YModulaConnection.getModulaConnection();
+				if(connection != null) {
 					numeroListaModula = ParametriUtils.getNextNumeratorLista();
-					em = inviaTestataAModula(numeroListaModula,connection,vTm);
-				}
-				if(em == null) {
-					for(String key : objectKeys) {
-						YOrdVenToModula riga = YOrdVenToModula.elementWithKey(key, 0);
-						if(riga.getQtaDaEvadere().compareTo(BigDecimal.ZERO) == 1) {
+					em = inviaTestataAModula(numeroListaModula,connection,rows.get(0));
+					if(em == null) {
+						for (YOrdVenToModula riga : rows) {
 							em = riga.inviaAModula(numeroListaModula, connection);
 							if(em != null) {
 								return em;
 							}
 						}
+						if(em == null) {
+							ConnectionManager.commit();
+							connection.commit();
+						}
+						YOrdVenToModula.cancellaRigheOrdineVendita(KeyHelper.buildObjectKey(new String[] {rows.get(0).getIdAzienda(),rows.get(0).getRAnnoOrdVen(),rows.get(0).getRNumeroOrdVen()}));
+					}else {
+						return em;
 					}
-				}else {
-					return em;
 				}
-				YOrdVenToModula.cancellaRigheOrdineVendita(KeyHelper.buildObjectKey(new String[] {vTm.getIdAzienda(),vTm.getRAnnoOrdVen(),vTm.getRNumeroOrdVen()}));
 			}else {
-				//errore di connessione
+				em = new ErrorMessage("YSOF3_001","Non e' presente nessuna riga da esportare, le quantita' sono gia' state evase completamente!");
+				return em;
 			}
 		}catch (SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
 			if(e instanceof ModulaConnectionException)
@@ -217,10 +209,23 @@ public class YOrdVenToModula extends YOrdVenToModulaPO {
 		return em;
 	}
 
+	public static List<YOrdVenToModula> getListaRigheDaInviare(String[] keys){
+		List<YOrdVenToModula> list = new ArrayList<>();
+		for(String key : keys) {
+			try {
+				YOrdVenToModula riga = YOrdVenToModula.elementWithKey(key, 0);
+				if(riga.getQtaDaEvadere().compareTo(BigDecimal.ZERO) == 1) {
+					list.add(riga);
+				}
+			}catch (SQLException e) {
+				e.printStackTrace(Trace.excStream);
+			}
+		}
+		return list;
+	}
+
 	public static ErrorMessage inviaTestataAModula(String numeroListaModula, Connection connection, YOrdVenToModula vTm) {
-		ErrorMessage em = null;
-		em = scriviTestataDBModula(numeroListaModula, connection,vTm);
-		return em;
+		return scriviTestataDBModula(numeroListaModula, connection,vTm);
 	}
 
 	public ErrorMessage inviaAModula(String numeroListaModula,Connection connection) throws SQLException {
@@ -250,7 +255,6 @@ public class YOrdVenToModula extends YOrdVenToModulaPO {
 			} catch (Exception e) {
 				e.printStackTrace(Trace.excStream);
 			}
-			ConnectionManager.commit();
 		}
 		return null;		
 	}
@@ -260,20 +264,15 @@ public class YOrdVenToModula extends YOrdVenToModulaPO {
 		String lineNumber = this.getRRigaOrd().toString().concat("#").concat(this.getRDetRigaOrd().toString());
 		String idArticolo = this.getRArticolo();
 		BigDecimal qta = this.getQtaDaEvadere();
-		try (
-				Connection conn = connection;
-				PreparedStatement ps = cs_insert_imp_ordini_rig.getStatement()
-				) {
-			ps.setString(1, numeroListaModula);
-			ps.setString(2, idArticolo);
-			ps.setString(3, null);
-			ps.setBigDecimal(4, qta);
-			ps.setString(5, lineNumber);
-			ps.setString(6, null);
-			int ris = ps.executeUpdate();
-			if(ris > 0) {
-				//connection.commit();
+		int ris;
+		try {
+			ris = YGestoreEsportazioneModula.esportaRigaOrdine(connection, numeroListaModula, idArticolo, null, qta, lineNumber, null);
+			if(ris <= 0) {
+				em = new ErrorMessage("");
 			}
+		} catch (SQLException e) {
+			em = CreaMessaggioErrore.daRcAErrorMessage(-9999, (SQLException) e);
+			e.printStackTrace(Trace.excStream);
 		}
 		return em;
 	}
@@ -286,32 +285,17 @@ public class YOrdVenToModula extends YOrdVenToModulaPO {
 		}
 		String ragSoc = testata.getCliente().getIdCliente();
 		String descrizioneLista = "[V]" + ragSoc.trim().concat(",").concat(testata.getAnnoDocumento().trim()).concat(",").concat(testata.getNumeroDocumento().trim());
-		try (
-				Connection conn = connection;
-				PreparedStatement ps = cs_insert_imp_ordini.getStatement()
-				) {
-			ps.setString(1, numeroListaModula);
-			ps.setString(2, descrizioneLista);
-			ps.setString(3, "P");
-			ps.setString(4, null);
-			int ris = ps.executeUpdate();
-			if(ris > 0) {
-				//connection.commit();
+		int ris;
+		try {
+			ris = YGestoreEsportazioneModula.esportaTestataOrdine(connection, numeroListaModula, descrizioneLista, TipoMovimentoModula.PRELIEVO, null);
+			if(ris <= 0) {
+				em = new ErrorMessage("");
 			}
 		} catch (SQLException e) {
-			em = CreaMessaggioErrore.daRcAErrorMessage(9999, e);
+			em = CreaMessaggioErrore.daRcAErrorMessage(-9999, (SQLException) e);
 			e.printStackTrace(Trace.excStream);
 		}
 		return em;
-	}
-
-	protected static YModulaConnection getNewModulaConnection() {
-		try {
-			return new YModulaConnection();
-		} catch (Exception e) {
-			e.printStackTrace(Trace.excStream);
-		}
-		return null;
 	}
 
 	protected static OrdineVendita getOrdineVenditaDB(String idAzienda,String idAnnoOrd,String idNumeroOrd) {

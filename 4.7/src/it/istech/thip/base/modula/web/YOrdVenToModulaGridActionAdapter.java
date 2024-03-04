@@ -8,6 +8,7 @@ import javax.servlet.ServletException;
 import com.thera.thermfw.ad.ClassADCollection;
 import com.thera.thermfw.base.Trace;
 import com.thera.thermfw.common.ErrorMessage;
+import com.thera.thermfw.persist.KeyHelper;
 import com.thera.thermfw.web.ServletEnvironment;
 import com.thera.thermfw.web.WebToolBar;
 import com.thera.thermfw.web.WebToolBarButton;
@@ -34,10 +35,15 @@ public class YOrdVenToModulaGridActionAdapter extends AziendaGridActionAdapter{
 		if("INVIA_MODULA".equals(azione)) {
 			try {
 				String[] objectKeys = se.getRequest().getParameterValues(OBJECT_KEY);
-				String ordVenKey = null;
 				ErrorMessage em = YOrdVenToModula.inviaAModulaMultple(objectKeys);
 				if(em == null) {
-					String url = "/" + se.getServletPath() + "/it.thera.thip.vendite.ordineVE.web.OrdineVenditaGridActionAdapter?thClassName=OrdineVendita&ObjectKey="+URLEncoder.encode(ordVenKey)+"&thTarget=NEW&thAction=UPDATE_RIGHE";
+					String[] keyParts = KeyHelper.unpackObjectKey(objectKeys[0]);
+					String key = KeyHelper.buildObjectKey(new String[] {
+							keyParts[0],
+							keyParts[1],
+							keyParts[2]
+					});
+					String url = "/" + se.getServletPath() + "/it.thera.thip.vendite.ordineVE.web.OrdineVenditaGridActionAdapter?thClassName=OrdineVendita&ObjectKey="+URLEncoder.encode(key)+"&thTarget=NEW&thAction=UPDATE_RIGHE";
 					se.sendRequest(getServletContext(), url, false);
 				}else {
 					se.addErrorMessage(em);

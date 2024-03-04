@@ -6,13 +6,9 @@ import com.thera.thermfw.persist.KeyHelper;
 import com.thera.thermfw.web.ServletEnvironment;
 
 import it.istech.thip.base.modula.YDocAcqToModula;
-import it.istech.thip.base.modula.YOrdVenToModula;
-import it.thera.thip.acquisti.documentoAC.DocumentoAcquisto;
 import it.thera.thip.acquisti.documentoAC.web.DocumentoTestataAcquistoEstrattoFormActionAdapter;
-import it.thera.thip.base.generale.ParametroPsn;
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.sql.SQLException;
 import javax.servlet.ServletException;
 
 public class SiDocumentoTestataAcquistoEstrattoFormActionAdapter extends DocumentoTestataAcquistoEstrattoFormActionAdapter {

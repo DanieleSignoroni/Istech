@@ -1,0 +1,6 @@
+<B>2024-03-04 12:51:32</B>
+<BR>Il file <B>W:\PthDev\Projects\Panthera\Istech\conf\db\Estensioni\00008\tddml\8_DROP_YMAT_PRO_TO_MODULA.TDDML</B> e' stato generato correttamente.
+<BR>Il dizionario <B>YMAT_PRO_TO_MODULA</B> è stato creato
+<BR>Il file <B>W:\PthDev\Projects\Panthera\Istech\conf\db\Estensioni\00008\tddml\8_YMAT_PRO_TO_MODULA.TDDML</B> e' stato generato correttamente.
+<BR>Il file <B>W:\PthDev\Projects\Panthera\Istech\conf\db\Estensioni\00008\tddml\8_CONSTRAINT.TDDML</B> e' stato generato correttamente.
+<BR><B>La generazione tabella è completata con successo</B><BR>

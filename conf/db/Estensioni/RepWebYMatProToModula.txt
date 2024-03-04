@@ -1,0 +1,7 @@
+<B>2024-03-04 12:51:53</B>
+<BR>Il file <B>YMatProToModula.html</B> è stato generato correttamente nel cartela <B>W:\PthDev\Projects\Panthera\Istech\conf\db\Estensioni\00008\websrc\it\istech\thip\base\modula</B><BR>Il file <B>YMatProToModula.html</B> è stato copiato nel classpath
+<BR>Il file <B>YMatProToModula.tfml</B> è stato generato correttamente nel cartela <B>W:\PthDev\Projects\Panthera\Istech\conf\db\Estensioni\00008\websrc\it\istech\thip\base\modula</B><BR>Il file <B>YMatProToModula.tfml</B> è stato copiato nel classpath
+<BR>Il file <B>YMatProToModula.js</B> è stato generato correttamente nel cartela <B>W:\PthDev\Projects\Panthera\Istech\conf\db\Estensioni\00008\websrc\it\istech\thip\base\modula</B><BR>Il file <B>YMatProToModula.js</B> è stato copiato nel classpath
+<BR>Il file <B>YMatProToModula.properties</B> è stato generato correttamente nel cartela <B>W:\PthDev\Projects\Panthera\Istech\conf\db\Estensioni\00008\src\it\istech\thip\base\modula\resources</B><BR>Il file <B>it\istech\thip\base\modula\resourcesYMatProToModula.properties</B> è stato copiato nel classpath
+<BR>Il file <B>YMatProToModula.properties</B> è stato generato correttamente nel cartela <B>W:\PthDev\Projects\Panthera\Istech\conf\db\Estensioni\00008\src\it\istech\thip\base\modula\resources</B><BR>Il file <B>it\istech\thip\base\modula\resourcesYMatProToModula.properties</B> è stato copiato nel classpath
+<BR><B>Generazione HTML/TFML è completata con successo</B><BR>
