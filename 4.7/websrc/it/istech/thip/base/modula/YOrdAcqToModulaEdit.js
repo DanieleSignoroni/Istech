@@ -131,7 +131,7 @@ function buildXMLRequest(requestId, eventId, classAD, contents) {
 
 
 function getServletName() {
-  return "it.istech.thip.acquisti.ordineAC.web.YOrdAcqToModulaAjaxServlet";
+  return "it.istech.thip.base.modula.web.YOrdAcqToModulaAjaxServlet";
 }
 
 

@@ -1,0 +1,6 @@
+<B>2024-03-04 15:38:19</B>
+<BR>Il file <B>W:\PthDev\Projects\Panthera\Istech\conf\db\Estensioni\00009\tddml\9_DROP_YDOC_VEN_TO_MODULA.TDDML</B> e' stato generato correttamente.
+<BR>Il dizionario <B>YDOC_VEN_TO_MODULA</B> è stato creato
+<BR>Il file <B>W:\PthDev\Projects\Panthera\Istech\conf\db\Estensioni\00009\tddml\9_YDOC_VEN_TO_MODULA.TDDML</B> e' stato generato correttamente.
+<BR>Il file <B>W:\PthDev\Projects\Panthera\Istech\conf\db\Estensioni\00009\tddml\9_CONSTRAINT.TDDML</B> e' stato generato correttamente.
+<BR><B>La generazione tabella è completata con successo</B><BR>

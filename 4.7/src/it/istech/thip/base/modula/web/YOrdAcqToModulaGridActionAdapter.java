@@ -53,11 +53,11 @@ public class YOrdAcqToModulaGridActionAdapter extends AziendaGridActionAdapter{
 
 	@Override
 	public String getWebFormModifierExtended() {
-		return "it.istech.thip.acquisti.ordineAC.web.YOrdAcqToModulaEditFormModifier";
+		return "it.istech.thip.base.modula.web.YOrdAcqToModulaEditFormModifier";
 	}
 
 	@Override
 	public String getWebGridStylistName() {
-		return "it.istech.thip.acquisti.ordineAC.web.YOrdAcqToModulaStylist";
+		return "it.istech.thip.base.modula.web.YOrdAcqToModulaStylist";
 	}
 }

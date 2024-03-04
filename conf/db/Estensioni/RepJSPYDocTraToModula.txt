@@ -1,0 +1,3 @@
+<B>2024-03-04 16:20:07</B>
+<BR>Il file <B>YDocTraToModula.jsp</B> è stato generato correttamente nel cartela <B>W:\PthDev\Projects\Panthera\Istech\conf\db\Estensioni\00010\websrc\it\istech\thip\base\modula</B><BR>Il file <B>YDocTraToModula.jsp</B> è stato copiato nel classpath
+<BR><B>Generazione JSP è completata con successo</B><BR>
