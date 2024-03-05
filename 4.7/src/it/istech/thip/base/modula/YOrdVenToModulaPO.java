@@ -1,81 +1,70 @@
 package it.istech.thip.base.modula;
 
-import com.thera.thermfw.persist.*;
-import java.sql.*;
-import java.util.*;
+import java.math.BigDecimal;
+import java.sql.SQLException;
+import java.util.Vector;
+
+import com.thera.thermfw.common.BaseComponentsCollection;
+import com.thera.thermfw.common.BusinessObject;
+import com.thera.thermfw.common.Deletable;
+import com.thera.thermfw.persist.CopyException;
+import com.thera.thermfw.persist.Copyable;
+import com.thera.thermfw.persist.Factory;
+import com.thera.thermfw.persist.KeyHelper;
+import com.thera.thermfw.persist.PersistentObject;
+import com.thera.thermfw.persist.Proxy;
+import com.thera.thermfw.persist.TableManager;
+import com.thera.thermfw.security.Authorizable;
+import com.thera.thermfw.security.Conflictable;
+
 import it.thera.thip.base.articolo.Articolo;
-import java.math.*;
-import it.thera.thip.cs.*;
-import com.thera.thermfw.common.*;
 import it.thera.thip.base.azienda.Azienda;
-import com.thera.thermfw.security.*;
+import it.thera.thip.cs.EntitaAzienda;
 
-public abstract class YOrdVenToModulaPO extends EntitaAzienda implements BusinessObject, Authorizable, Deletable, Conflictable {
+/**
+ * <h1>Softre Solutions</h1>
+ * <br>
+ * @author Daniele Signoroni 05/03/2024
+ * <br><br>
+ * <b>71453	DSSOF3 05/03/2024</b>
+ * <p>Prima stesura</p>
+ */
 
-	/**
-	 *  instance
-	 */
+public abstract class YOrdVenToModulaPO extends EntitaAzienda
+		implements BusinessObject, Authorizable, Deletable, Conflictable {
+
 	private static YOrdVenToModula cInstance;
 
-	/**
-	 * Attributo iRAnnoOrdVen
-	 */
 	protected String iRAnnoOrdVen;
 
-	/**
-	 * Attributo iRNumeroOrdVen
-	 */
 	protected String iRNumeroOrdVen;
 
-	/**
-	 * Attributo iRRigaOrd
-	 */
 	protected Integer iRRigaOrd;
 
-	/**
-	 * Attributo iRDetRigaOrd
-	 */
 	protected Integer iRDetRigaOrd;
 
-	/**
-	 * Attributo iQtaOriginale
-	 */
 	protected BigDecimal iQtaOriginale;
 
-	/**
-	 * Attributo iQtaEvasa
-	 */
 	protected BigDecimal iQtaEvasa;
 
-	/**
-	 * Attributo iQtaResidua
-	 */
 	protected BigDecimal iQtaResidua;
 
-	/**
-	 * Attributo iGiacenza
-	 */
 	protected BigDecimal iGiacenza;
 
-	/**
-	 * Attributo iQtaDaEvadere
-	 */
 	protected BigDecimal iQtaDaEvadere;
 
-	/**
-	 * Attributo iRelarticolo
-	 */
 	protected Proxy iRelarticolo = new Proxy(it.thera.thip.base.articolo.Articolo.class);
 
 	@SuppressWarnings("rawtypes")
-	public static Vector retrieveList(String where, String orderBy, boolean optimistic) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+	public static Vector retrieveList(String where, String orderBy, boolean optimistic)
+			throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
 		if (cInstance == null)
-			cInstance = (YOrdVenToModula)Factory.createObject(YOrdVenToModula.class);
+			cInstance = (YOrdVenToModula) Factory.createObject(YOrdVenToModula.class);
 		return PersistentObject.retrieveList(cInstance, where, orderBy, optimistic);
 	}
 
 	public static YOrdVenToModula elementWithKey(String key, int lockType) throws SQLException {
-		return (YOrdVenToModula)PersistentObject.elementWithKey(YOrdVenToModula.class, key, lockType);
+		return (YOrdVenToModula) PersistentObject.elementWithKey(YOrdVenToModula.class, key, lockType);
 	}
 
 	public YOrdVenToModulaPO() {
@@ -182,7 +171,7 @@ public abstract class YOrdVenToModulaPO extends EntitaAzienda implements Busines
 	}
 
 	public Articolo getRelarticolo() {
-		return (Articolo)iRelarticolo.getObject();
+		return (Articolo) iRelarticolo.getObject();
 	}
 
 	public void setRelarticoloKey(String key) {
@@ -213,19 +202,19 @@ public abstract class YOrdVenToModulaPO extends EntitaAzienda implements Busines
 
 	public void setRArticolo(String rArticolo) {
 		String key = iRelarticolo.getKey();
-		iRelarticolo.setKey(KeyHelper.replaceTokenObjectKey(key , 2, rArticolo));
+		iRelarticolo.setKey(KeyHelper.replaceTokenObjectKey(key, 2, rArticolo));
 		setDirty();
 	}
 
 	public String getRArticolo() {
 		String key = iRelarticolo.getKey();
-		String objRArticolo = KeyHelper.getTokenObjectKey(key,2);
+		String objRArticolo = KeyHelper.getTokenObjectKey(key, 2);
 		return objRArticolo;
 	}
 
 	public void setEqual(Copyable obj) throws CopyException {
 		super.setEqual(obj);
-		YOrdVenToModulaPO yOrdVenToModulaPO = (YOrdVenToModulaPO)obj;
+		YOrdVenToModulaPO yOrdVenToModulaPO = (YOrdVenToModulaPO) obj;
 		iRelarticolo.setEqual(yOrdVenToModulaPO.iRelarticolo);
 	}
 
@@ -250,7 +239,7 @@ public abstract class YOrdVenToModulaPO extends EntitaAzienda implements Busines
 		String rNumeroOrdVen = getRNumeroOrdVen();
 		Integer rRigaOrd = getRRigaOrd();
 		Integer rDetRigaOrd = getRDetRigaOrd();
-		Object[] keyParts = {idAzienda, rAnnoOrdVen, rNumeroOrdVen, rRigaOrd, rDetRigaOrd};
+		Object[] keyParts = { idAzienda, rAnnoOrdVen, rNumeroOrdVen, rRigaOrd, rDetRigaOrd };
 		return KeyHelper.buildObjectKey(keyParts);
 	}
 

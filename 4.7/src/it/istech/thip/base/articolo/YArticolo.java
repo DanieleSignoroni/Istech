@@ -16,7 +16,7 @@ import it.thera.thip.base.azienda.Azienda;
  * <br>
  * @author Daniele Signoroni 01/03/2024
  * <br><br>
- * <b></b>
+ * <b>71453	DSSOF3	01/03/2024</b>
  * <p>Prima stesura.<br>
  * Aggiungere flag per gestire l'esportazione verso Modula dell'anagrafica.
  * </p>

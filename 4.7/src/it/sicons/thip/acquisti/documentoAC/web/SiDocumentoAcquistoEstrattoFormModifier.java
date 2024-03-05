@@ -10,8 +10,19 @@ import it.thera.thip.base.documenti.StatoAttivita;
 import it.thera.thip.base.documenti.StatoAvanzamento;
 import it.thera.thip.base.documenti.web.DocumentoDatiSessione;
 import it.thera.thip.base.generale.ParametroPsn;
+import it.thera.thip.cs.DatiComuniEstesi;
+
 import java.io.IOException;
 import javax.servlet.jsp.JspWriter;
+
+/**
+ * <h1>Softre Solutions</h1>
+ * <br>
+ * @author Daniele Signoroni 05/03/2024
+ * <br><br>
+ * <b>71453	DSSOF3 05/03/2024</b>
+ * <p>Prima stesura</p>
+ */
 
 public class SiDocumentoAcquistoEstrattoFormModifier extends DocumentoAcquistoEstrattoFormModifier {
 	
@@ -24,8 +35,7 @@ public class SiDocumentoAcquistoEstrattoFormModifier extends DocumentoAcquistoEs
 		BODataCollector boDC = this.getBODataCollector();
 		DocumentoAcquisto doc = (DocumentoAcquisto)boDC.getBo();
 		if (doc.getStatoAvanzamento() == StatoAvanzamento.DEFINITIVO 
-				&& doc.getFlagRiservatoUtente2() == '-' 
-				&& doc.getDatiComuniEstesi().getStato() == 'V'
+				&& doc.getDatiComuniEstesi().getStato() == DatiComuniEstesi.VALIDO
 				&& doc.getCollegatoAMagazzino() == StatoAttivita.ESEGUITO
 				&& (doc.getTipoDocumento() == TipoDocumentoAcq.ACQUISTO || doc.getTipoDocumento() == TipoDocumentoAcq.RESO_FORNITORE)) {
 			out.println("<td  nowrap=\"true\" height=\"0\">");

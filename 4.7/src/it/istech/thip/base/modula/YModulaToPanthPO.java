@@ -1,60 +1,60 @@
 package it.istech.thip.base.modula;
 
-import com.thera.thermfw.persist.*;
-import java.sql.*;
-import java.util.*;
-import java.math.*;
-import it.thera.thip.cs.*;
-import com.thera.thermfw.common.*;
+import java.math.BigDecimal;
+import java.sql.SQLException;
+import java.util.Vector;
+
+import com.thera.thermfw.common.BaseComponentsCollection;
+import com.thera.thermfw.common.BusinessObject;
+import com.thera.thermfw.common.Deletable;
+import com.thera.thermfw.persist.CopyException;
+import com.thera.thermfw.persist.Copyable;
+import com.thera.thermfw.persist.Factory;
+import com.thera.thermfw.persist.KeyHelper;
+import com.thera.thermfw.persist.PersistentObject;
+import com.thera.thermfw.persist.TableManager;
+import com.thera.thermfw.security.Authorizable;
+import com.thera.thermfw.security.Conflictable;
+
 import it.thera.thip.base.azienda.Azienda;
-import com.thera.thermfw.security.*;
+import it.thera.thip.cs.EntitaAzienda;
 
-public abstract class YModulaToPanthPO extends EntitaAzienda implements BusinessObject, Authorizable, Deletable, Conflictable {
+/**
+ * <h1>Softre Solutions</h1>
+ * <br>
+ * @author Daniele Signoroni 05/03/2024
+ * <br><br>
+ * <b>71453	DSSOF3 05/03/2024</b>
+ * <p>Prima stesura</p>
+ */
 
-	/**
-	 *  instance
-	 */
+public abstract class YModulaToPanthPO extends EntitaAzienda
+		implements BusinessObject, Authorizable, Deletable, Conflictable {
+
 	private static YModulaToPanth cInstance;
 
-	/**
-	 * Attributo iId
-	 */
 	protected Integer iId;
 
-	/**
-	 * Attributo iOrdine
-	 */
 	protected String iOrdine;
 
-	/**
-	 * Attributo iArticolo
-	 */
 	protected String iArticolo;
 
-	/**
-	 * Attributo iTipoMov
-	 */
 	protected char iTipoMov = 'V';
 
-	/**
-	 * Attributo iTipoDoc
-	 */
 	protected char iTipoDoc = 'V';
 
-	/**
-	 * Attributo iQtaEvasaUmPrm
-	 */
 	protected BigDecimal iQtaEvasaUmPrm;
 
 	@SuppressWarnings("rawtypes")
-	public static Vector retrieveList(String where, String orderBy, boolean optimistic) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+	public static Vector retrieveList(String where, String orderBy, boolean optimistic)
+			throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
 		if (cInstance == null)
-			cInstance = (YModulaToPanth)Factory.createObject(YModulaToPanth.class);
+			cInstance = (YModulaToPanth) Factory.createObject(YModulaToPanth.class);
 		return PersistentObject.retrieveList(cInstance, where, orderBy, optimistic);
 	}
 
 	public static YModulaToPanth elementWithKey(String key, int lockType) throws SQLException {
-		return (YModulaToPanth)PersistentObject.elementWithKey(YModulaToPanth.class, key, lockType);
+		return (YModulaToPanth) PersistentObject.elementWithKey(YModulaToPanth.class, key, lockType);
 	}
 
 	public YModulaToPanthPO() {
@@ -148,7 +148,7 @@ public abstract class YModulaToPanthPO extends EntitaAzienda implements Business
 	public String getKey() {
 		String idAzienda = getIdAzienda();
 		Integer id = getId();
-		Object[] keyParts = {idAzienda, id};
+		Object[] keyParts = { idAzienda, id };
 		return KeyHelper.buildObjectKey(keyParts);
 	}
 

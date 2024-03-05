@@ -10,6 +10,15 @@ import it.thera.thip.magazzino.saldi.SaldoMag;
 import it.thera.thip.vendite.ordineVE.OrdineVenditaRigaPrm;
 import java.math.BigDecimal;
 
+/**
+ * <h1>Softre Solutions</h1>
+ * <br>
+ * @author Daniele Signoroni 05/03/2024
+ * <br><br>
+ * <b>71453	DSSOF3 05/03/2024</b>
+ * <p>Prima stesura</p>
+ */
+
 public class SiOrdineVenditaRigaPrm extends OrdineVenditaRigaPrm {
 	private static BigDecimal ZERO = new BigDecimal("0.0");
 

@@ -35,7 +35,7 @@ import it.thera.thip.vendite.proposteEvasione.CreaMessaggioErrore;
  * <br>
  * @author Daniele Signoroni 29/02/2024
  * <br><br>
- * <b></b>
+ * <b>71453	DSSOF3	29/02/2024</b>
  * <p>Prima stesura.<br>
  * Si occupa della ricezione dei movimenti da Modula.<br>
  * Legge le tabelle {@value YExpOrdini#TABLE_NAME},{@value YExpOrdiniRighe#TABLE_NAME} e crea 1 documento con N righe per ogni record.<br></br>

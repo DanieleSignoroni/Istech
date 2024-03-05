@@ -11,6 +11,16 @@ import com.thera.thermfw.web.WebJSTypeList;
 import it.thera.thip.acquisti.ordineAC.OrdineAcquisto;
 import it.thera.thip.acquisti.ordineAC.web.OrdineAcquistoEstrattoFormModifier;
 import it.thera.thip.base.documenti.StatoAvanzamento;
+import it.thera.thip.cs.DatiComuniEstesi;
+
+/**
+ * <h1>Softre Solutions</h1>
+ * <br>
+ * @author Daniele Signoroni 05/03/2024
+ * <br><br>
+ * <b>71453	DSSOF3 05/03/2024</b>
+ * <p>Prima stesura</p>
+ */
 
 public class YOrdineAcquistoEstrattoFormModifier extends OrdineAcquistoEstrattoFormModifier{
 	
@@ -25,8 +35,7 @@ public class YOrdineAcquistoEstrattoFormModifier extends OrdineAcquistoEstrattoF
 		BODataCollector boDC = this.getBODataCollector();
 		OrdineAcquisto doc = (OrdineAcquisto)boDC.getBo();
 		if (doc.getStatoAvanzamento() == StatoAvanzamento.DEFINITIVO 
-				&& doc.getFlagRiservatoUtente2() == '-' 
-				&& doc.getDatiComuniEstesi().getStato() == 'V'
+				&& doc.getDatiComuniEstesi().getStato() == DatiComuniEstesi.VALIDO
 				&& doc.getCausale().isLavEsterna()) { //solo per C/Lav
 			out.println("<td  nowrap=\"true\" height=\"0\">");
 			out.println("<button name=\"thgenera\" id=\"thgenera\" onclick=\"genera()\" style=\"width:30px;height:30px;\" type=\"button\" title=\"" + ResourceLoader.getString("it/sicons/thip/base/comuniVenAcq/resources/Documento", "Genera") + "\">");

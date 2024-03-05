@@ -40,7 +40,7 @@ import it.thera.thip.vendite.proposteEvasione.CreaMessaggioErrore;
  * <br>
  * @author Daniele Signoroni 29/02/2024
  * <br><br>
- * <b></b>
+ * <b>71453	DSSOF3	29/02/2024</b>
  * <p>Prima stesura.<br>
  * Si occupa del riallineamento delle giacenze tra Panthera e Modula.<br>
  * Legge le tabelle {@value YExpGiacenze#TABLE_NAME},{@value SaldoMagTM#TABLE_NAME}.<br></br>

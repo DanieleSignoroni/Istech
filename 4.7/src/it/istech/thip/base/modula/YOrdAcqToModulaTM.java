@@ -5,6 +5,15 @@ import java.sql.*;
 import com.thera.thermfw.base.*;
 import it.thera.thip.cs.*;
 
+/**
+ * <h1>Softre Solutions</h1>
+ * <br>
+ * @author Daniele Signoroni 05/03/2024
+ * <br><br>
+ * <b>71453	DSSOF3 05/03/2024</b>
+ * <p>Prima stesura</p>
+ */
+
 public class YOrdAcqToModulaTM extends TableManager {
 
 	public static final String ID_AZIENDA = "ID_AZIENDA";

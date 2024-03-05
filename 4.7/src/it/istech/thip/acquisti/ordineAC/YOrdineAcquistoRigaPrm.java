@@ -5,6 +5,15 @@ import java.math.BigDecimal;
 import it.thera.thip.acquisti.ordineAC.OrdineAcquistoRigaPrm;
 import it.thera.thip.base.comuniVenAcq.TipoRiga;
 
+/**
+ * <h1>Softre Solutions</h1>
+ * <br>
+ * @author Daniele Signoroni 05/03/2024
+ * <br><br>
+ * <b>71453	DSSOF3 05/03/2024</b>
+ * <p>Prima stesura</p>
+ */
+
 public class YOrdineAcquistoRigaPrm extends OrdineAcquistoRigaPrm{
 	
 	/**

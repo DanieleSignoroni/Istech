@@ -11,6 +11,15 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import javax.servlet.ServletException;
 
+/**
+ * <h1>Softre Solutions</h1>
+ * <br>
+ * @author Daniele Signoroni 05/03/2024
+ * <br><br>
+ * <b>71453	DSSOF3 05/03/2024</b>
+ * <p>Prima stesura</p>
+ */
+
 public class SiDocumentoTestataAcquistoEstrattoFormActionAdapter extends DocumentoTestataAcquistoEstrattoFormActionAdapter {
 
 	private static final long serialVersionUID = 1L;

@@ -1,20 +1,40 @@
 package it.istech.thip.base.modula;
 
-import com.thera.thermfw.persist.*;
-import java.sql.*;
-import java.util.*;
+import java.math.BigDecimal;
+import java.sql.SQLException;
+import java.util.Vector;
+
+import com.thera.thermfw.common.BaseComponentsCollection;
+import com.thera.thermfw.common.BusinessObject;
+import com.thera.thermfw.common.Deletable;
+import com.thera.thermfw.persist.CopyException;
+import com.thera.thermfw.persist.Copyable;
+import com.thera.thermfw.persist.Factory;
+import com.thera.thermfw.persist.KeyHelper;
+import com.thera.thermfw.persist.PersistentObject;
+import com.thera.thermfw.persist.Proxy;
+import com.thera.thermfw.persist.TableManager;
+import com.thera.thermfw.security.Authorizable;
+import com.thera.thermfw.security.Conflictable;
+
 import it.thera.thip.base.articolo.Articolo;
-import java.math.*;
-import it.thera.thip.cs.*;
+import it.thera.thip.base.azienda.Azienda;
+import it.thera.thip.cs.EntitaAzienda;
 import it.thera.thip.produzione.ordese.AttivitaEsecMateriale;
 import it.thera.thip.produzione.ordese.AttivitaEsecutiva;
 import it.thera.thip.produzione.ordese.OrdineEsecutivo;
 
-import com.thera.thermfw.common.*;
-import it.thera.thip.base.azienda.Azienda;
-import com.thera.thermfw.security.*;
+/**
+ * <h1>Softre Solutions</h1>
+ * <br>
+ * @author Daniele Signoroni 05/03/2024
+ * <br><br>
+ * <b>71453	DSSOF3 05/03/2024</b>
+ * <p>Prima stesura</p>
+ */
 
-public abstract class YMatProToModulaPO extends EntitaAzienda implements BusinessObject, Authorizable, Deletable, Conflictable {
+public abstract class YMatProToModulaPO extends EntitaAzienda
+		implements BusinessObject, Authorizable, Deletable, Conflictable {
 
 	private static YMatProToModula cInstance;
 
@@ -45,14 +65,15 @@ public abstract class YMatProToModulaPO extends EntitaAzienda implements Busines
 	protected Proxy iAttivitaEsecMateriale = new Proxy(it.thera.thip.produzione.ordese.AttivitaEsecMateriale.class);
 
 	@SuppressWarnings("rawtypes")
-	public static Vector retrieveList(String where, String orderBy, boolean optimistic) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+	public static Vector retrieveList(String where, String orderBy, boolean optimistic)
+			throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
 		if (cInstance == null)
-			cInstance = (YMatProToModula)Factory.createObject(YMatProToModula.class);
+			cInstance = (YMatProToModula) Factory.createObject(YMatProToModula.class);
 		return PersistentObject.retrieveList(cInstance, where, orderBy, optimistic);
 	}
 
 	public static YMatProToModula elementWithKey(String key, int lockType) throws SQLException {
-		return (YMatProToModula)PersistentObject.elementWithKey(YMatProToModula.class, key, lockType);
+		return (YMatProToModula) PersistentObject.elementWithKey(YMatProToModula.class, key, lockType);
 	}
 
 	public YMatProToModulaPO() {
@@ -104,25 +125,26 @@ public abstract class YMatProToModulaPO extends EntitaAzienda implements Busines
 		return iQtaDaEvadere;
 	}
 
-	public void setOrdineEsecutivo(OrdineEsecutivo ordineEsecutivo)
-	{
+	public void setOrdineEsecutivo(OrdineEsecutivo ordineEsecutivo) {
 		this.iOrdineEsecutivo.setObject(ordineEsecutivo);
 		setDirty();
 	}
+
 	public OrdineEsecutivo getOrdineEsecutivo() {
-		return (OrdineEsecutivo)iOrdineEsecutivo.getObject();
+		return (OrdineEsecutivo) iOrdineEsecutivo.getObject();
 	}
 
 	public void setOrdineEsecutivoKey(String key) {
 		iOrdineEsecutivo.setKey(key);
 		setDirty();
 	}
+
 	public String getOrdineEsecutivoKey() {
 		return iOrdineEsecutivo.getKey();
 	}
 
 	public AttivitaEsecutiva getAttivitaEsecutiva() {
-		return (AttivitaEsecutiva)iAttivitaEsecutiva.getObject();
+		return (AttivitaEsecutiva) iAttivitaEsecutiva.getObject();
 	}
 
 	public void setAttivitaEsecutivaKey(String key) {
@@ -176,7 +198,7 @@ public abstract class YMatProToModulaPO extends EntitaAzienda implements Busines
 	}
 
 	public AttivitaEsecMateriale getAttivitaEsecMateriale() {
-		return (AttivitaEsecMateriale)iAttivitaEsecMateriale.getObject();
+		return (AttivitaEsecMateriale) iAttivitaEsecMateriale.getObject();
 	}
 
 	public void setAttivitaEsecMaterialeKey(String key) {
@@ -221,7 +243,6 @@ public abstract class YMatProToModulaPO extends EntitaAzienda implements Busines
 		iAttivitaEsecMateriale.setKey(KeyHelper.replaceTokenObjectKey(key2, 4, idRigaAttivita));
 	}
 
-
 	protected void setIdRigaAttivitaMatInternal(String idRigaAtvMatInternal) {
 		String key1 = iAttivitaEsecMateriale.getKey();
 		iAttivitaEsecMateriale.setKey(KeyHelper.replaceTokenObjectKey(key1, 5, idRigaAtvMatInternal));
@@ -231,33 +252,29 @@ public abstract class YMatProToModulaPO extends EntitaAzienda implements Busines
 		return iAttivitaEsecMateriale.getKey();
 	}
 
-	public void setRAnnoOrd(String idAnnoOrdine)
-	{
+	public void setRAnnoOrd(String idAnnoOrdine) {
 		String key = iOrdineEsecutivo.getKey();
 		iOrdineEsecutivo.setKey(KeyHelper.replaceTokenObjectKey(key, 2, idAnnoOrdine));
 		key = iAttivitaEsecutiva.getKey();
 		iAttivitaEsecutiva.setKey(KeyHelper.replaceTokenObjectKey(key, 2, idAnnoOrdine));
 		setDirty();
 	}
-	
-	public String getRAnnoOrd()
-	{
+
+	public String getRAnnoOrd() {
 		String key = iOrdineEsecutivo.getKey();
 		String objIdAnnoOrdine = KeyHelper.getTokenObjectKey(key, 2);
 		return objIdAnnoOrdine;
 	}
-	
-	public void setRNumeroOrd(String idNumeroOrdine)
-	{
+
+	public void setRNumeroOrd(String idNumeroOrdine) {
 		String key = iOrdineEsecutivo.getKey();
 		iOrdineEsecutivo.setKey(KeyHelper.replaceTokenObjectKey(key, 3, idNumeroOrdine));
 		key = iAttivitaEsecutiva.getKey();
 		iAttivitaEsecutiva.setKey(KeyHelper.replaceTokenObjectKey(key, 3, idNumeroOrdine));
 		setDirty();
 	}
-	
-	public String getRNumeroOrd()
-	{
+
+	public String getRNumeroOrd() {
 		String key = iOrdineEsecutivo.getKey();
 		String objIdNumeroOrdine = KeyHelper.getTokenObjectKey(key, 3);
 		return objIdNumeroOrdine;
@@ -298,7 +315,7 @@ public abstract class YMatProToModulaPO extends EntitaAzienda implements Busines
 	}
 
 	public Articolo getRelarticolo() {
-		return (Articolo)iRelarticolo.getObject();
+		return (Articolo) iRelarticolo.getObject();
 	}
 
 	public void setRelarticoloKey(String key) {
@@ -329,19 +346,19 @@ public abstract class YMatProToModulaPO extends EntitaAzienda implements Busines
 
 	public void setRArticolo(String rArticolo) {
 		String key = iRelarticolo.getKey();
-		iRelarticolo.setKey(KeyHelper.replaceTokenObjectKey(key , 2, rArticolo));
+		iRelarticolo.setKey(KeyHelper.replaceTokenObjectKey(key, 2, rArticolo));
 		setDirty();
 	}
 
 	public String getRArticolo() {
 		String key = iRelarticolo.getKey();
-		String objRArticolo = KeyHelper.getTokenObjectKey(key,2);
+		String objRArticolo = KeyHelper.getTokenObjectKey(key, 2);
 		return objRArticolo;
 	}
 
 	public void setEqual(Copyable obj) throws CopyException {
 		super.setEqual(obj);
-		YMatProToModulaPO yMatProToModulaPO = (YMatProToModulaPO)obj;
+		YMatProToModulaPO yMatProToModulaPO = (YMatProToModulaPO) obj;
 		iRelarticolo.setEqual(yMatProToModulaPO.iRelarticolo);
 	}
 
@@ -366,7 +383,7 @@ public abstract class YMatProToModulaPO extends EntitaAzienda implements Busines
 		String rNumeroOrd = getRNumeroOrd();
 		Integer rRigaAttivita = getRRigaAttivita();
 		Integer rRigaMateriale = getRRigaMateriale();
-		Object[] keyParts = {idAzienda, rAnnoOrd, rNumeroOrd, rRigaAttivita, rRigaMateriale};
+		Object[] keyParts = { idAzienda, rAnnoOrd, rNumeroOrd, rRigaAttivita, rRigaMateriale };
 		return KeyHelper.buildObjectKey(keyParts);
 	}
 
@@ -389,4 +406,3 @@ public abstract class YMatProToModulaPO extends EntitaAzienda implements Busines
 	}
 
 }
-

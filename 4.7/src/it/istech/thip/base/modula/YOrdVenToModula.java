@@ -25,6 +25,15 @@ import it.thera.thip.vendite.ordineVE.OrdineVenditaRiga;
 import it.thera.thip.vendite.ordineVE.OrdineVenditaRigaSec;
 import it.thera.thip.vendite.proposteEvasione.CreaMessaggioErrore;
 
+/**
+ * <h1>Softre Solutions</h1>
+ * <br>
+ * @author Daniele Signoroni 05/03/2024
+ * <br><br>
+ * <b>71453	DSSOF3 05/03/2024</b>
+ * <p>Prima stesura</p>
+ */
+
 public class YOrdVenToModula extends YOrdVenToModulaPO {
 
 	public ErrorMessage checkDelete() {
@@ -75,11 +84,7 @@ public class YOrdVenToModula extends YOrdVenToModulaPO {
 		return qta;
 	}
 
-	/**
-	 * 
-	 * @param keyOrdVen = chiave dell'ordine di vendita di cui vanno create le righe che poi si vorranno passare a modula
-	 * @throws SQLException 
-	 */
+	
 	@SuppressWarnings("unchecked")
 	public static void creaRighePerOrdineVendita(String keyOrdVen) throws SQLException {
 		OrdineVendita ordVen = (OrdineVendita) OrdineVendita.elementWithKey(OrdineVendita.class, keyOrdVen, 0);
@@ -96,11 +101,7 @@ public class YOrdVenToModula extends YOrdVenToModulaPO {
 					Articolo art = riga.getArticolo();
 					switch(art.getTipoParte()) {
 					case ArticoloDatiIdent.KIT_NON_GEST:
-						/*
-						 Se un riga primaria è intestata ad un articolo che ha tipo parte “kit non gestito a
-						 magazzino” allora la riga primaria non viene mostrata. Vengono mostrate però le
-						 relative righe secondarie
-						 */
+						
 						List<OrdineVenditaRigaSec> righeSec = riga.getRigheSecondarie();
 						for(OrdineVenditaRigaSec rigaSec : righeSec) {
 							YOrdVenToModula rigaOrdVenToModula = new YOrdVenToModula(rigaSec);
@@ -108,11 +109,7 @@ public class YOrdVenToModula extends YOrdVenToModulaPO {
 						}
 						break;					
 					case ArticoloDatiIdent.KIT_GEST:
-						/*
-						Se un riga primaria è intestata ad un articolo che ha tipo parte “kit gestito a magazzino”
-						allora la riga primaria viene mostrata. Vengono però omesse le relative righe
-						secondarie.
-						 */
+						
 						YOrdVenToModula rigaOrdVenToModula = new YOrdVenToModula(riga);
 						righeOrdVenToModula.add(rigaOrdVenToModula);
 						break;
@@ -128,14 +125,7 @@ public class YOrdVenToModula extends YOrdVenToModulaPO {
 		}
 	}
 
-	/**
-	 * 
-	 * @param keyOrdVen = chiave dell'ordine di vendita di cui verranno cancellate tutte le righe in THIPPERS.YORD_VEN_TO_MODULA
-	 * @throws SQLException
-	 * @throws IllegalAccessException 
-	 * @throws InstantiationException 
-	 * @throws ClassNotFoundException 
-	 */
+	
 	@SuppressWarnings("unchecked")
 	public static int cancellaRigheOrdineVendita(String keyOrdVen) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
 		int recordCancellati = 0;
@@ -151,16 +141,7 @@ public class YOrdVenToModula extends YOrdVenToModulaPO {
 		return recordCancellati;
 	}
 
-	/**
-	 * @author Daniele Signoroni
-	 * <p>Prima stesura:<br>
-	 * L'utente una volta selezionati N {@link YOrdVenToModula} record dalla griglia, vuole invarli a modula.<br>
-	 * Viene quindi inserito un record per la testata tramite {@link #STMT_INSERT_IMP_ORDINI}.<br>
-	 * Per ogni riga selezionata invece viene inserito un record in riga {@link #STMT_INSERT_IMP_ORDINI_RIG}.<br>
-	 * </p>
-	 * @param objectKeys
-	 * @return
-	 */
+	
 	public static ErrorMessage inviaAModulaMultple(String[] objectKeys) {
 		ErrorMessage em = null;
 		Connection connection = null;

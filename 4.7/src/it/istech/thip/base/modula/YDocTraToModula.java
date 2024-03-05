@@ -18,6 +18,15 @@ import it.sicons.ag.produzione.mancanti.ParametriUtils;
 import com.thera.thermfw.base.Trace;
 import com.thera.thermfw.common.*;
 
+/**
+ * <h1>Softre Solutions</h1>
+ * <br>
+ * @author Daniele Signoroni 05/03/2024
+ * <br><br>
+ * <b>71453	DSSOF3 05/03/2024</b>
+ * <p>Prima stesura</p>
+ */
+
 public class YDocTraToModula extends YDocTraToModulaPO {
 
 	public ErrorMessage checkDelete() {
@@ -83,11 +92,7 @@ public class YDocTraToModula extends YDocTraToModulaPO {
 		return qta;
 	}
 
-	/**
-	 * 
-	 * @param keyDocVen = chiave dell'ordine di vendita di cui vanno create le righe che poi si vorranno passare a modula
-	 * @throws SQLException 
-	 */
+	
 	@SuppressWarnings("unchecked")
 	public static void creaRighePerDocumentoTrasferimento(String keyDocVen) throws SQLException {
 		DocMagTrasferimento docTrasf = (DocMagTrasferimento) DocMagTrasferimento.elementWithKey(DocMagTrasferimento.class, keyDocVen, 0);
@@ -108,14 +113,7 @@ public class YDocTraToModula extends YDocTraToModulaPO {
 		}
 	}
 
-	/**
-	 * 
-	 * @param keyDocVen = chiave dell'ordine di vendita di cui verranno cancellate tutte le righe in THIPPERS.YORD_VEN_TO_MODULA
-	 * @throws SQLException
-	 * @throws IllegalAccessException 
-	 * @throws InstantiationException 
-	 * @throws ClassNotFoundException 
-	 */
+	
 	@SuppressWarnings("unchecked")
 	public static int cancellaRigheDocumentoTrasferimento(String keyDocVen) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
 		int recordCancellati = 0;
@@ -131,16 +129,7 @@ public class YDocTraToModula extends YDocTraToModulaPO {
 		return recordCancellati;
 	}
 
-	/**
-	 * @author Daniele Signoroni
-	 * <p>Prima stesura:<br>
-	 * L'utente una volta selezionati N {@link YDocTraToModula} record dalla griglia, vuole invarli a modula.<br>
-	 * Viene quindi inserito un record per la testata tramite {@link #STMT_INSERT_IMP_ORDINI}.<br>
-	 * Per ogni riga selezionata invece viene inserito un record in riga {@link #STMT_INSERT_IMP_ORDINI_RIG}.<br>
-	 * </p>
-	 * @param objectKeys
-	 * @return
-	 */
+	
 	public static ErrorMessage inviaAModulaMultple(String[] objectKeys) {
 		ErrorMessage em = null;
 		Connection connection = null;

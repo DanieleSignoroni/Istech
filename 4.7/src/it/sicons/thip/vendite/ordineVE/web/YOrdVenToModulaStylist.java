@@ -8,6 +8,15 @@ import com.thera.thermfw.gui.cnr.DisplayObject;
 import com.thera.thermfw.persist.KeyHelper;
 import com.thera.thermfw.web.WebGridStylistDefault;
 
+/**
+ * <h1>Softre Solutions</h1>
+ * <br>
+ * @author Daniele Signoroni 05/03/2024
+ * <br><br>
+ * <b>71453	DSSOF3 05/03/2024</b>
+ * <p>Prima stesura</p>
+ */
+
 public class YOrdVenToModulaStylist extends WebGridStylistDefault{
 
 	public ClassADCollection getClassADCollection() throws Exception{

@@ -4,6 +4,16 @@ import it.thera.thip.acquisti.documentoAC.DocumentoAcqRigaPrm;
 import it.thera.thip.acquisti.generaleAC.CausaleDocumentoRigaAcq;
 import it.thera.thip.base.comuniVenAcq.TipoRiga;
 
+/**
+ * <h1>Softre Solutions</h1>
+ * <br>
+ * @author Andrea Gatta 05/03/2024
+ * <br><br>
+ * <b>71453	AGSOF3 05/03/2024</b>
+ * <p>
+ * </p>
+ */
+
 public class YDocumentoAcqRigaPrm extends DocumentoAcqRigaPrm {
 	
 	/**

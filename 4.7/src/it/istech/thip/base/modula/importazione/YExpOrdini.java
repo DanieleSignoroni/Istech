@@ -10,7 +10,7 @@ import it.thera.thip.cs.ResultSetIterator;
  * <br>
  * @author Daniele Signoroni 29/02/2024
  * <br><br>
- * <b></b>    
+ * <b>71453	DSSOF3	29/02/2024</b>    
  * <p>Rappresenta la tabella HOST_IMPEXP.dbo.EXP_ORDINI.<br>
  * All'interno della classe sono presenti i suoi attributi e i suoi nomi colonne.<br>
  * Verrano poi utilizzate in un {@link ResultSetIterator} per leggere i dati.

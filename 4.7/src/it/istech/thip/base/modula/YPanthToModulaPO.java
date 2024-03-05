@@ -1,66 +1,62 @@
 package it.istech.thip.base.modula;
 
-import com.thera.thermfw.persist.*;
-import java.sql.*;
-import java.util.*;
-import java.math.*;
-import it.thera.thip.cs.*;
-import com.thera.thermfw.common.*;
+import java.math.BigDecimal;
+import java.sql.SQLException;
+import java.util.Vector;
+
+import com.thera.thermfw.common.BaseComponentsCollection;
+import com.thera.thermfw.common.BusinessObject;
+import com.thera.thermfw.common.Deletable;
+import com.thera.thermfw.persist.CopyException;
+import com.thera.thermfw.persist.Copyable;
+import com.thera.thermfw.persist.Factory;
+import com.thera.thermfw.persist.KeyHelper;
+import com.thera.thermfw.persist.PersistentObject;
+import com.thera.thermfw.persist.TableManager;
+import com.thera.thermfw.security.Authorizable;
+import com.thera.thermfw.security.Conflictable;
+
 import it.thera.thip.base.azienda.Azienda;
-import com.thera.thermfw.security.*;
+import it.thera.thip.cs.EntitaAzienda;
 
-public abstract class YPanthToModulaPO extends EntitaAzienda implements BusinessObject, Authorizable, Deletable, Conflictable {
+/**
+ * <h1>Softre Solutions</h1>
+ * <br>
+ * @author Daniele Signoroni 05/03/2024
+ * <br><br>
+ * <b>71453	DSSOF3 05/03/2024</b>
+ * <p>Prima stesura</p>
+ */
 
+public abstract class YPanthToModulaPO extends EntitaAzienda
+		implements BusinessObject, Authorizable, Deletable, Conflictable {
 
-	/**
-	 *  instance
-	 */
 	private static YPanthToModula cInstance;
 
-	/**
-	 * Attributo iTipoDoc
-	 */
 	protected char iTipoDoc = 'V';
 
-	/**
-	 * Attributo iIdAnnoDoc
-	 */
 	protected String iIdAnnoDoc;
 
-	/**
-	 * Attributo iIdNumeroDoc
-	 */
 	protected String iIdNumeroDoc;
 
-	/**
-	 * Attributo iIdRigaDoc
-	 */
 	protected Integer iIdRigaDoc;
 
-	/**
-	 * Attributo iIdDetRigaDoc
-	 */
 	protected Integer iIdDetRigaDoc;
 
-	/**
-	 * Attributo iTipoMov
-	 */
 	protected char iTipoMov = 'V';
 
-	/**
-	 * Attributo iQtaEvasaUmPrm
-	 */
 	protected BigDecimal iQtaEvasaUmPrm;
 
 	@SuppressWarnings("rawtypes")
-	public static Vector retrieveList(String where, String orderBy, boolean optimistic) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+	public static Vector retrieveList(String where, String orderBy, boolean optimistic)
+			throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
 		if (cInstance == null)
-			cInstance = (YPanthToModula)Factory.createObject(YPanthToModula.class);
+			cInstance = (YPanthToModula) Factory.createObject(YPanthToModula.class);
 		return PersistentObject.retrieveList(cInstance, where, orderBy, optimistic);
 	}
 
 	public static YPanthToModula elementWithKey(String key, int lockType) throws SQLException {
-		return (YPanthToModula)PersistentObject.elementWithKey(YPanthToModula.class, key, lockType);
+		return (YPanthToModula) PersistentObject.elementWithKey(YPanthToModula.class, key, lockType);
 	}
 
 	public YPanthToModulaPO() {
@@ -175,7 +171,7 @@ public abstract class YPanthToModulaPO extends EntitaAzienda implements Business
 		String idNumeroDoc = getIdNumeroDoc();
 		Integer idRigaDoc = getIdRigaDoc();
 		Integer idDetRigaDoc = getIdDetRigaDoc();
-		Object[] keyParts = {idAzienda, tipoDoc, idAnnoDoc, idNumeroDoc, idRigaDoc, idDetRigaDoc};
+		Object[] keyParts = { idAzienda, tipoDoc, idAnnoDoc, idNumeroDoc, idRigaDoc, idDetRigaDoc };
 		return KeyHelper.buildObjectKey(keyParts);
 	}
 

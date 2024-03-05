@@ -14,6 +14,15 @@ import it.thera.thip.base.documenti.web.DocumentoEstrattoFormModifier;
 import it.thera.thip.cs.DatiComuniEstesi;
 import it.thera.thip.magazzino.documenti.DocMagTrasferimento;
 
+/**
+ * <h1>Softre Solutions</h1>
+ * <br>
+ * @author Daniele Signoroni 05/03/2024
+ * <br><br>
+ * <b>71453	DSSOF3 05/03/2024</b>
+ * <p>Prima stesura</p>
+ */
+
 public class YDocMagTrasfEstrattoFormModifier extends DocumentoEstrattoFormModifier{
 
 	@Override

@@ -5,7 +5,7 @@ package it.istech.thip.base.modula;
  * <br>
  * @author Daniele Signoroni 05/03/2024
  * <br><br>
- * <b></b>
+ * <b>71453	DSSOF3	05/03/2024</b>
  * <p>
  * Riferimento attributo YTipoDoc.
  * </p>

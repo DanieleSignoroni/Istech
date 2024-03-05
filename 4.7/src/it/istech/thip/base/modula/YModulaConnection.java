@@ -11,11 +11,12 @@ import it.thera.thip.base.generale.ParametroPsn;
 /**
  * <h1>Softre Solutions</h1>
  * <br>
- * @author Daniele Signoroni 27/02/2024
+ * @author Daniele Signoroni 05/03/2024
  * <br><br>
- * <b></b>    
- * <p>Classe manager per la connessione al database utilizzato dal Modula.</p>
+ * <b>71453	DSSOF3 05/03/2024</b>
+ * <p>Prima stesura</p>
  */
+
 public class YModulaConnection {
 
 	//private static String classDriver = "net.sourceforge.jtds.jdbc.Driver";
@@ -26,17 +27,7 @@ public class YModulaConnection {
 	private static String userName = null;
 	private static String password = null;
 	
-	/**
-	 * @author Daniele Signoroni
-	 * <p>
-	 * Prima stesura.<br>
-	 * Il metodo ritorna si occupa di ritornare una {@link java.sql.Connection} al database di Modula.<br>
-	 * Lo fa tramite {@link ConnectionDescriptor}, definendone uno e aprendo la connessione.<br></br>
-	 * <b>ATTENZIONE</b>: la casse non implementa nessun pooling delle connessioi, e' a cura del programmatore chiuderla in maniera opportuna!.
-	 * </p>
-	 * @return la {@link java.sql.Connection} al database
-	 * @throws ModulaConnectionException nel caso in cui l'apertura della connessione fallisce.
-	 */
+	
 	public static Connection getModulaConnection() throws ModulaConnectionException {
 		if(host == null || dbname == null || userName == null || password == null)
 			retrieveConnectionValues();

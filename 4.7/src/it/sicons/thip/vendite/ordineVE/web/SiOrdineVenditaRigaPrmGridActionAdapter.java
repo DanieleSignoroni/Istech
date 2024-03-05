@@ -23,7 +23,7 @@ import javax.servlet.ServletException;
  * <br>
  * @author Andrea Gatta 12/02/2024
  * <br><br>
- * <b>71XXX	AGSOF3	12/02/2024</b>    <p>Rimosso bottone MODULA dal gridactionadapter</p>
+ * <b>71453	AGSOF3	12/02/2024</b>    <p>Rimosso bottone MODULA dal gridactionadapter</p>
  */
 
 public class SiOrdineVenditaRigaPrmGridActionAdapter extends OrdineVenditaRigaPrmGridActionAdapter {

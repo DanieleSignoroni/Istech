@@ -15,6 +15,15 @@ import it.thera.thip.vendite.documentoVE.DocumentoVendita;
 import it.thera.thip.vendite.documentoVE.web.DocumentoVenditaEstrattoFormModifier;
 import it.thera.thip.vendite.generaleVE.TipoDocumento;
 
+/**
+ * <h1>Softre Solutions</h1>
+ * <br>
+ * @author Daniele Signoroni 05/03/2024
+ * <br><br>
+ * <b>71453	DSSOF3 05/03/2024</b>
+ * <p>Prima stesura</p>
+ */
+
 public class YDocumentoVenditaEstrattoFormModifier extends DocumentoVenditaEstrattoFormModifier{
 	
 	@Override

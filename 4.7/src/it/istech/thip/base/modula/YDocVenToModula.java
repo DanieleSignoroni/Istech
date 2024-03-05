@@ -27,11 +27,21 @@ import it.thera.thip.vendite.documentoVE.DocumentoVenditaRiga;
 import it.thera.thip.vendite.generaleVE.TipoDocumento;
 import it.thera.thip.vendite.proposteEvasione.CreaMessaggioErrore;
 
+/**
+ * <h1>Softre Solutions</h1>
+ * <br>
+ * @author Daniele Signoroni 05/03/2024
+ * <br><br>
+ * <b>71453	DSSOF3 05/03/2024</b>
+ * <p>Prima stesura</p>
+ */
+
 public class YDocVenToModula extends YDocVenToModulaPO {
 
 	public ErrorMessage checkDelete() {
 		return null;
 	}
+	
 
 	public YDocVenToModula() {
 		super();
@@ -77,11 +87,7 @@ public class YDocVenToModula extends YDocVenToModulaPO {
 		return qta;
 	}
 
-	/**
-	 * 
-	 * @param keyDocVen = chiave dell'ordine di vendita di cui vanno create le righe che poi si vorranno passare a modula
-	 * @throws SQLException 
-	 */
+	
 	@SuppressWarnings("unchecked")
 	public static void creaRighePerDocumentoVendita(String keyDocVen) throws SQLException {
 		DocumentoVendita DocVen = (DocumentoVendita) DocumentoVendita.elementWithKey(DocumentoVendita.class, keyDocVen, 0);
@@ -97,11 +103,7 @@ public class YDocVenToModula extends YDocVenToModulaPO {
 					Articolo art = riga.getArticolo();
 					switch(art.getTipoParte()) {
 					case ArticoloDatiIdent.KIT_NON_GEST:
-						/*
-						 Se un riga primaria è intestata ad un articolo che ha tipo parte “kit non gestito a
-						 magazzino” allora la riga primaria non viene mostrata. Vengono mostrate però le
-						 relative righe secondarie
-						 */
+						
 						List<DocumentoVenRigaSec> righeSec = riga.getRigheSecondarie();
 						for(DocumentoVenRigaSec rigaSec : righeSec) {
 							YDocVenToModula rigaDocVenToModula = new YDocVenToModula(rigaSec);
@@ -109,11 +111,7 @@ public class YDocVenToModula extends YDocVenToModulaPO {
 						}
 						break;					
 					case ArticoloDatiIdent.KIT_GEST:
-						/*
-						Se un riga primaria è intestata ad un articolo che ha tipo parte “kit gestito a magazzino”
-						allora la riga primaria viene mostrata. Vengono però omesse le relative righe
-						secondarie.
-						 */
+						
 						YDocVenToModula rigaDocVenToModula = new YDocVenToModula(riga);
 						righeDocVenToModula.add(rigaDocVenToModula);
 						break;
@@ -129,14 +127,7 @@ public class YDocVenToModula extends YDocVenToModulaPO {
 		}
 	}
 
-	/**
-	 * 
-	 * @param keyDocVen = chiave dell'ordine di vendita di cui verranno cancellate tutte le righe in THIPPERS.YORD_VEN_TO_MODULA
-	 * @throws SQLException
-	 * @throws IllegalAccessException 
-	 * @throws InstantiationException 
-	 * @throws ClassNotFoundException 
-	 */
+	
 	@SuppressWarnings("unchecked")
 	public static int cancellaRigheDocumentoVendita(String keyDocVen) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
 		int recordCancellati = 0;
@@ -152,16 +143,7 @@ public class YDocVenToModula extends YDocVenToModulaPO {
 		return recordCancellati;
 	}
 
-	/**
-	 * @author Daniele Signoroni
-	 * <p>Prima stesura:<br>
-	 * L'utente una volta selezionati N {@link YDocVenToModula} record dalla griglia, vuole invarli a modula.<br>
-	 * Viene quindi inserito un record per la testata tramite {@link #STMT_INSERT_IMP_ORDINI}.<br>
-	 * Per ogni riga selezionata invece viene inserito un record in riga {@link #STMT_INSERT_IMP_ORDINI_RIG}.<br>
-	 * </p>
-	 * @param objectKeys
-	 * @return
-	 */
+	
 	public static ErrorMessage inviaAModulaMultple(String[] objectKeys) {
 		ErrorMessage em = null;
 		Connection connection = null;

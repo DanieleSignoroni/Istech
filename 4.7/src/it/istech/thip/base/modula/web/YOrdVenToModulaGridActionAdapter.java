@@ -17,6 +17,15 @@ import com.thera.thermfw.web.WebToolBarButton;
 import it.istech.thip.base.modula.YOrdVenToModula;
 import it.thera.thip.cs.web.AziendaGridActionAdapter;
 
+/**
+ * <h1>Softre Solutions</h1>
+ * <br>
+ * @author Daniele Signoroni 05/03/2024
+ * <br><br>
+ * <b>71453	DSSOF3 05/03/2024</b>
+ * <p>Prima stesura</p>
+ */
+
 public class YOrdVenToModulaGridActionAdapter extends AziendaGridActionAdapter{
 
 	private static final long serialVersionUID = 1L;

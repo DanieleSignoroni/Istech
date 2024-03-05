@@ -1,101 +1,59 @@
 package it.istech.thip.base.modula;
 
-import com.thera.thermfw.persist.*;
+import java.sql.SQLException;
 
-import java.sql.*;
-import com.thera.thermfw.base.*;
+import com.thera.thermfw.base.SystemParam;
+import com.thera.thermfw.persist.Factory;
+import com.thera.thermfw.persist.TableManager;
+
+/**
+ * <h1>Softre Solutions</h1>
+ * <br>
+ * @author Daniele Signoroni 05/03/2024
+ * <br><br>
+ * <b>71453	DSSOF3 05/03/2024</b>
+ * <p>Prima stesura</p>
+ */
 
 public class YPersDatiModulaTM extends TableManager {
 
-
-	/**
-	 * Attributo ID_AZIENDA
-	 */
 	public static final String ID_AZIENDA = "ID_AZIENDA";
 
-	/**
-	 * Attributo R_SERIE_DOC_TRA
-	 */
 	public static final String R_SERIE_DOC_TRA = "R_SERIE_DOC_TRA";
 
-	/**
-	 * Attributo R_CAU_TES_DOC_TRA
-	 */
 	public static final String R_CAU_TES_DOC_TRA = "R_CAU_TES_DOC_TRA";
 
-	/**
-	 * Attributo R_NUMERATORE_DOC_TRA
-	 */
 	public static final String R_NUMERATORE_DOC_TRA = "R_NUMERATORE_DOC_TRA";
 
-	/**
-	 * Attributo R_SERIE_DOC_GEN
-	 */
 	public static final String R_SERIE_DOC_GEN = "R_SERIE_DOC_GEN";
 
-	/**
-	 * Attributo R_NUMERATORE_DOC_GEN
-	 */
 	public static final String R_NUMERATORE_DOC_GEN = "R_NUMERATORE_DOC_GEN";
 
-	/**
-	 * Attributo R_CAU_DOC_GEN
-	 */
 	public static final String R_CAU_DOC_GEN = "R_CAU_DOC_GEN";
 
-	/**
-	 * Attributo R_CAU_DOC_GEN_RIG_VERS
-	 */
 	public static final String R_CAU_DOC_GEN_RIG_VERS = "R_CAU_DOC_GEN_RIG_VERS";
 
-	/**
-	 * Attributo R_CAU_DOC_GEN_RIG_PREL
-	 */
 	public static final String R_CAU_DOC_GEN_RIG_PREL = "R_CAU_DOC_GEN_RIG_PREL";
 
-	/**
-	 * Attributo R_SERIE_DOC_RIALL
-	 */
 	public static final String R_SERIE_DOC_RIALL = "R_SERIE_DOC_RIALL";
 
-	/**
-	 * Attributo R_NUMERATORE_DOC_RIALL
-	 */
 	public static final String R_NUMERATORE_DOC_RIALL = "R_NUMERATORE_DOC_RIALL";
 
-	/**
-	 * Attributo R_CAU_DOC_RIALL
-	 */
 	public static final String R_CAU_DOC_RIALL = "R_CAU_DOC_RIALL";
 
-	/**
-	 * Attributo R_CAU_DOC_RIALL_RIG_RETPOS
-	 */
 	public static final String R_CAU_DOC_RIALL_RIG_RETPOS = "R_CAU_DOC_RIALL_RIG_RETPOS";
 
-	/**
-	 * Attributo R_CAU_DOC_RIALL_RIG_RETNEG
-	 */
 	public static final String R_CAU_DOC_RIALL_RIG_RETNEG = "R_CAU_DOC_RIALL_RIG_RETNEG";
 
-	/**
-	 *  TABLE_NAME
-	 */
 	public static final String TABLE_NAME = SystemParam.getSchema("THIPPERS") + "YPERS_DATI_MODULA";
 
-	/**
-	 *  instance
-	 */
 	private static TableManager cInstance;
 
-	/**
-	 *  CLASS_NAME
-	 */
 	private static final String CLASS_NAME = it.istech.thip.base.modula.YPersDatiModula.class.getName();
 
 	public synchronized static TableManager getInstance() throws SQLException {
 		if (cInstance == null) {
-			cInstance = (TableManager)Factory.createObject(YPersDatiModulaTM.class);
+			cInstance = (TableManager) Factory.createObject(YPersDatiModulaTM.class);
 		}
 		return cInstance;
 	}
@@ -131,11 +89,10 @@ public class YPersDatiModulaTM extends TableManager {
 	}
 
 	private void init() throws SQLException {
-		configure(ID_AZIENDA + ", " + R_SERIE_DOC_TRA + ", " + R_NUMERATORE_DOC_TRA + ", " + R_CAU_TES_DOC_TRA
-				+ ", " + R_SERIE_DOC_GEN + ", " + R_NUMERATORE_DOC_GEN + ", " + R_CAU_DOC_GEN + ", " + R_CAU_DOC_GEN_RIG_VERS
-				+ ", " + R_CAU_DOC_GEN_RIG_PREL + ", " + R_SERIE_DOC_RIALL + ", " + R_NUMERATORE_DOC_RIALL + ", " + R_CAU_DOC_RIALL
-				+ ", " + R_CAU_DOC_RIALL_RIG_RETNEG + ", " + R_CAU_DOC_RIALL_RIG_RETPOS);
+		configure(ID_AZIENDA + ", " + R_SERIE_DOC_TRA + ", " + R_NUMERATORE_DOC_TRA + ", " + R_CAU_TES_DOC_TRA + ", "
+				+ R_SERIE_DOC_GEN + ", " + R_NUMERATORE_DOC_GEN + ", " + R_CAU_DOC_GEN + ", " + R_CAU_DOC_GEN_RIG_VERS
+				+ ", " + R_CAU_DOC_GEN_RIG_PREL + ", " + R_SERIE_DOC_RIALL + ", " + R_NUMERATORE_DOC_RIALL + ", "
+				+ R_CAU_DOC_RIALL + ", " + R_CAU_DOC_RIALL_RIG_RETNEG + ", " + R_CAU_DOC_RIALL_RIG_RETPOS);
 	}
 
 }
-

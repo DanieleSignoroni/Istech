@@ -12,6 +12,15 @@ import it.istech.thip.base.modula.importazione.YExpOrdini;
 import it.istech.thip.base.modula.importazione.YExpOrdiniRighe;
 import it.thera.thip.base.azienda.Azienda;
 
+/**
+ * <h1>Softre Solutions</h1>
+ * <br>
+ * @author Daniele Signoroni 05/03/2024
+ * <br><br>
+ * <b>71453	DSSOF3 05/03/2024</b>
+ * <p>Prima stesura</p>
+ */
+
 public class YModulaToPanth extends YModulaToPanthPO {
 
 	public ErrorMessage checkDelete() {
@@ -42,17 +51,7 @@ public class YModulaToPanth extends YModulaToPanthPO {
 
 	}
 	
-	/**
-	 * @author Daniele Signoroni
-	 * <p>
-	 * Si occupa della scrittura di un record nella tabella {@value YModulaToPanthTM#TABLE_NAME}.<br>
-	 * </p>
-	 * @param testata della tabella {@value YExpOrdini#TABLE_NAME}
-	 * @param riga della tabella {@value YExpOrdiniRighe#TABLE_NAME}
-	 * @param tipoDoc uno tra quelli dell'enumerato {@link TipoDocumentoModula}
-	 * @return un interno che rappresenta l'rc del salvataggio
-	 * @throws SQLException in caso di exc nella save di PO
-	 */
+	
 	public static int scriviModulaToPanth(YExpOrdini testata, YExpOrdiniRighe riga, char tipoDoc) throws SQLException {
 		YModulaToPanth modulaToPanth = (YModulaToPanth) Factory.createObject(YModulaToPanth.class);
 		modulaToPanth.setIdAzienda(Azienda.getAziendaCorrente());
