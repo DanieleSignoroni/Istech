@@ -14,7 +14,7 @@ import com.thera.thermfw.web.WebToolBar;
 import com.thera.thermfw.web.WebToolBarButton;
 import com.thera.thermfw.web.servlet.GridActionAdapter;
 
-import it.istech.thip.base.modula.YOrdVenToModula;
+import it.istech.thip.base.modula.YDocProToModula;
 
 public class YDocProToModulaGridActionAdapter extends GridActionAdapter{
 	
@@ -26,18 +26,17 @@ public class YDocProToModulaGridActionAdapter extends GridActionAdapter{
 
 	public void modifyToolBar(WebToolBar toolBar) {
 		super.modifyToolBar(toolBar);
-		WebToolBarButton btn1 = new WebToolBarButton("INVIA_MODULA", "action_submit", "infoArea", "no", "it.sicons.thip.vendite.ordineVE.resources.SiOrdVenRig", "Genera", "it/sicons/thip/modula/images/Modula.ico", "INVIA_MODULA", "multipleSelSingleWindow", false);
+		WebToolBarButton btn1 = new WebToolBarButton("INVIA_MODULA", "action_submit", "same", "no", "it.sicons.thip.vendite.ordineVE.resources.SiOrdVenRig", "Genera", "it/sicons/thip/modula/images/Modula.ico", "INVIA_MODULA", "multipleSelSingleWindow", false);
 		toolBar.addButton(btn1);
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	protected void otherActions(ClassADCollection cadc, ServletEnvironment se) throws ServletException, IOException {
 		String azione = se.getRequest().getParameter(ACTION);
 		if("INVIA_MODULA".equals(azione)) {
 			try {
 				String[] objectKeys = se.getRequest().getParameterValues(OBJECT_KEY);
-				ErrorMessage em = YOrdVenToModula.inviaAModulaMultple(objectKeys);
+				ErrorMessage em = YDocProToModula.inviaAModulaMultple(objectKeys);
 				if(em == null) {
 					String[] keyParts = KeyHelper.unpackObjectKey(objectKeys[0]);
 					String key = KeyHelper.buildObjectKey(new String[] {
@@ -45,11 +44,11 @@ public class YDocProToModulaGridActionAdapter extends GridActionAdapter{
 							keyParts[1],
 							keyParts[2]
 					});
-					String url = "/" + se.getServletPath() + "/it.thera.thip.vendite.ordineVE.web.OrdineVenditaGridActionAdapter?thClassName=OrdineVendita&ObjectKey="+URLEncoder.encode(key)+"&thTarget=NEW&thAction=UPDATE_RIGHE";
+					String url = "/" + se.getServletPath() + "/it.thera.thip.produzione.documento.web.DocumentoProduzioneGridActionAdapter?thClassName=SiDocumentoProduzione&ObjectKey="+URLEncoder.encode(key,"UTF-8")+"&thTarget=NEW&thAction=UPDATE";
 					se.sendRequest(getServletContext(), url, false);
 				}else {
 					se.addErrorMessage(em);
-					se.sendRequest(getServletContext(), "com/thera/thermfw/common/InfoAreaHandler.jsp", false);
+					se.sendRequest(getServletContext(), "com/thera/thermfw/common/ErrorListHandler.jsp", false);
 				}
 			}catch(Exception e) {
 				e.printStackTrace(Trace.excStream);

@@ -47,13 +47,13 @@ public class SiDocumentoPrdFormActionAdapter extends DocumentoPrdFormActionAdapt
 					String[] c = KeyHelper.unpackObjectKey(key);
 					String filtri = 
 							"IdAzienda=" + c[0] + ";" +
-									"RAnnoDocAcq=" + c[1]+ ";" +
-									"RNumeroDocAcq=" + c[2] + ";";
+									"RAnnoDocPro=" + c[1]+ ";" +
+									"RNumeroDocPro=" + c[2] + ";";
 					String urlGriglia = 
 							se.getServletPath() + "com.thera.thermfw.web.servlet.ShowGrid" + 
 									"?thGridType=list" +
 									"&thRestrictConditions=" + URLEncoder.encode(filtri, "UTF-8") +
-									"&ClassName=YDocAcqToModula";
+									"&ClassName=YDocProToModula";
 
 					se.sendRequest(this.getServletContext(), urlGriglia, true);
 				}else {

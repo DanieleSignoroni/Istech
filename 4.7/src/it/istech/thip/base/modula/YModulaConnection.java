@@ -18,7 +18,7 @@ import it.thera.thip.base.generale.ParametroPsn;
  */
 public class YModulaConnection {
 
-	private static String classDriver = "net.sourceforge.jtds.jdbc.Driver";
+	//private static String classDriver = "net.sourceforge.jtds.jdbc.Driver";
 	private static String host = null;
 	private static String port = "";
 	private static String dbname = null;

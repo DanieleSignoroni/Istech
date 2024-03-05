@@ -11,6 +11,7 @@ import it.thera.thip.magazzino.documenti.DocMagTrasferimento;
 import it.thera.thip.magazzino.documenti.DocMagTrasferimentoRiga;
 import it.thera.thip.magazzino.saldi.SaldoMag;
 import it.thera.thip.vendite.proposteEvasione.CreaMessaggioErrore;
+import it.istech.thip.base.articolo.YArticolo;
 import it.istech.thip.base.modula.esportazione.YGestoreEsportazioneModula;
 import it.sicons.ag.produzione.mancanti.ParametriUtils;
 
@@ -94,7 +95,9 @@ public class YDocTraToModula extends YDocTraToModulaPO {
 			List<YDocTraToModula> righeDocVenToModula = new ArrayList<YDocTraToModula>();
 			List<DocMagTrasferimentoRiga> righe = docTrasf.getRighe();
 			for(DocMagTrasferimentoRiga riga : righe) {
-				if ("MO".equals(riga.getArticolo().getIdClasseA())) {
+				if ("MO".equals(riga.getArticolo().getIdClasseA())
+						&& ("MOD".equals(riga.getIdMagazzino()) && "001".equals(riga.getCodiceMagazzinoArrivo()))
+						 || "001".equals(riga.getIdMagazzino()) && "MOD".equals(riga.getCodiceMagazzinoArrivo())) {
 
 					YDocTraToModula rigaDocVenToModula = new YDocTraToModula(riga);
 					righeDocVenToModula.add(rigaDocVenToModula);
@@ -237,7 +240,19 @@ public class YDocTraToModula extends YDocTraToModulaPO {
 			em = CreaMessaggioErrore.daRcAErrorMessage(rc, null);
 		else {
 			try {
-				em = scriviRigaDBModula(numeroListaModula, connection);
+				boolean esportaArticolo;
+				switch (tipoMovimento) {
+				case TipoMovimentoModula.PRELIEVO:
+					esportaArticolo = false;
+					break;
+				case TipoMovimentoModula.VERSAMENTO:
+					esportaArticolo = true;
+					break;
+				default:
+					esportaArticolo = false;
+					break;
+				}
+				em = scriviRigaDBModula(numeroListaModula, connection,esportaArticolo);
 				if(em != null) {
 					return em;
 				}
@@ -248,13 +263,23 @@ public class YDocTraToModula extends YDocTraToModulaPO {
 		return null;		
 	}
 
-	protected ErrorMessage scriviRigaDBModula(String numeroListaModula,Connection connection) throws SQLException {
+	protected ErrorMessage scriviRigaDBModula(String numeroListaModula,Connection connection, boolean esportaArticolo) throws SQLException {
 		ErrorMessage em = null;
 		String lineNumber = this.getRRigaDoc().toString().concat("#").concat(this.getRDetRigaDoc().toString());
 		String idArticolo = this.getRArticolo();
 		BigDecimal qta = this.getQtaDaEvadere();
-		int ris;
+		int ris = 0;
 		try {
+			if(getRelarticolo() instanceof YArticolo
+					&& !((YArticolo)getRelarticolo()).isEsportatoModula()
+					&& esportaArticolo) {
+				ris = YArticolo.esportaArticoloVersoModula(connection, (YArticolo) this.getRelarticolo());
+				if(ris > 0)
+					ris += YArticolo.aggiornaStatoEsportazioneModulaArticolo(idArticolo, true);
+			}
+			if(ris <= 0) {
+				return new ErrorMessage("YSOF3_001","Impossibile esportare il nuovo articolo verso modula");
+			}
 			ris = YGestoreEsportazioneModula.esportaRigaOrdine(connection, numeroListaModula, idArticolo, null, qta, lineNumber, null);
 			if(ris <= 0) {
 				em = new ErrorMessage("");
@@ -272,7 +297,7 @@ public class YDocTraToModula extends YDocTraToModulaPO {
 		if(testata == null) {
 			//new error msg testata non trovata
 		}
-		String ragSoc = testata.getCliente().getIdCliente();
+		String ragSoc = "DocTrasfGen";
 		String descrizioneLista = "[V]" + ragSoc.trim().concat(",").concat(testata.getAnnoDocumento().trim()).concat(",").concat(testata.getNumeroDocumento().trim());
 		int ris;
 		try {

@@ -34,7 +34,6 @@ public class YModulaToPanth extends YModulaToPanthPO {
 				e.printStackTrace();
 				e.printStackTrace(Trace.excStream);
 			}finally {
-				if(cs != null) cs.free();
 				if(rs != null) rs.close();
 			}
 		}

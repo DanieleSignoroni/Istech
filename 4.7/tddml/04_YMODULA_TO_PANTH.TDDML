@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE TDDML SYSTEM "../../../TDDML.dtd">
+<TDDML>
+  <!-- YMODULA_TO_PANTH (YMODULA): Modula to Panthera; -->
+  <CreateTable schema="THIPPERS" name="YMODULA_TO_PANTH" shortname="YMODULA">
+    <Column name="ID_AZIENDA" shortname="ID_AZIENDA" type="char" length="3" nullable="no"/>
+    <Column name="STATO" shortname="STATO" type="char" length="1" nullable="no"/>
+    <Column name="R_UTENTE_CRZ" shortname="R_UTENTE_C" type="char" length="20" nullable="yes"/>
+    <Column name="TIMESTAMP_CRZ" shortname="TIMESTAMP_" type="timestamp" nullable="no" default="CURRENT TIMESTAMP"/>
+    <Column name="R_UTENTE_AGG" shortname="R_UTENTE_A" type="char" length="20" nullable="yes"/>
+    <Column name="TIMESTAMP_AGG" shortname="TIMESTAMP0" type="timestamp" nullable="no" default="CURRENT TIMESTAMP"/>
+    <Column name="ID" shortname="ID" type="integer" nullable="no"/>
+    <Column name="ORDINE" shortname="ORDINE" type="char" length="20" nullable="yes"/>
+    <Column name="ARTICOLO" shortname="ARTICOLO" type="char" length="25" nullable="yes"/>
+    <Column name="TIPO_MOV" shortname="TIPO_MOV" type="char" length="1" nullable="no" default="V"/>
+    <Column name="TIPO_DOC" shortname="TIPO_DOC" type="char" length="1" nullable="no" default="V"/>
+    <Column name="QTA_EVASA_UM_PRM" shortname="QTA_EVASA_" type="decimal" length="19" scale="6" nullable="yes"/>
+  </CreateTable>
+  <CreateIndex schema="THIPPERS" name="YMODULA_TO_PAN_I01" tabschema="THIPPERS" tabname="YMODULA_TO_PANTH" shortname="YMODUL_I01" unique="yes">
+    <IndexCol name="ID_AZIENDA" order="Asc"/>
+    <IndexCol name="ID" order="Asc"/>
+  </CreateIndex>
+  <AlterTable schema="THIPPERS" name="YMODULA_TO_PANTH">
+    <AddPrimaryKey>
+      <PrimaryKey>
+        <ColumnRef name="ID_AZIENDA"/>
+        <ColumnRef name="ID"/>
+      </PrimaryKey>
+    </AddPrimaryKey>
+  </AlterTable>
+  <Comment>
+    <CommentTable schema="THIPPERS" name="YMODULA_TO_PANTH" text="Modula to Panthera">
+      <CommentColumn name="ID_AZIENDA" text="Azienda"/>
+      <CommentColumn name="STATO" text="Stato"/>
+      <CommentColumn name="R_UTENTE_CRZ" text="Utente creazione"/>
+      <CommentColumn name="TIMESTAMP_CRZ" text="Timestamp creazione"/>
+      <CommentColumn name="R_UTENTE_AGG" text="Utente ultima modifica"/>
+      <CommentColumn name="TIMESTAMP_AGG" text="Timestamp ultima modifica"/>
+      <CommentColumn name="ID" text="ID"/>
+      <CommentColumn name="ORDINE" text="Ordine"/>
+      <CommentColumn name="ARTICOLO" text="Articolo"/>
+      <CommentColumn name="TIPO_MOV" text="Tipo mov"/>
+      <CommentColumn name="TIPO_DOC" text="Tipo doc"/>
+      <CommentColumn name="QTA_EVASA_UM_PRM" text="Qta evasa UM Prm"/>
+    </CommentTable>
+    <CommentIndex schema="THIPPERS" name="YMODULA_TO_PAN_I01" text="Primary Key"/>
+  </Comment>
+  <Grant schema="THIPPERS" name="YMODULA_TO_PANTH"/>
+</TDDML>
