@@ -8,7 +8,6 @@ import com.thera.thermfw.web.WebToolBar;
 import com.thera.thermfw.web.WebToolBarButton;
 
 import it.istech.thip.base.modula.YMatProToModula;
-import it.istech.thip.base.modula.YOrdVenToModula;
 import it.thera.thip.produzione.ordese.web.OrdineEsecutivoFormActionAdapter;
 import java.io.IOException;
 import java.net.URLEncoder;

@@ -36,7 +36,11 @@ public class YDocTraToModula extends YDocTraToModulaPO {
 		vTm.setRDetRigaDoc(riga.getDettaglioRigaDocumento());
 		vTm.setRArticolo(riga.getIdArticolo());
 
-		vTm.setQtaOriginale(riga.getQuantita().getQuantitaInUMPrm());
+		if("MOD".equals(riga.getIdMagazzino()) && "001".equals(riga.getCodiceMagazzinoArrivo())) {
+			vTm.setQtaOriginale(riga.getQuantita().getQuantitaInUMPrm());
+		}else if("001".equals(riga.getIdMagazzino()) && "MOD".equals(riga.getCodiceMagazzinoArrivo())){
+			vTm.setQtaOriginale(riga.getQuantita().getQuantitaInUMPrm()); //non ce' la rif
+		}
 
 		BigDecimal qtaGiaEvasa = vTm.cercaQtaGiaEvasa();
 		vTm.setQtaEvasa(qtaGiaEvasa); //cercare qta evasa in YPANTH_TO_MODULA
@@ -50,7 +54,13 @@ public class YDocTraToModula extends YDocTraToModulaPO {
 		}else if("001".equals(riga.getIdMagazzino()) && "MOD".equals(riga.getCodiceMagazzinoArrivo())){
 			magazzinoSaldo = "MOD";
 		}
-		String[] keySaldo = {riga.getIdAzienda(),magazzinoSaldo,riga.getIdArticolo(),Integer.toString(riga.getIdVersioneRcs()), Integer.toString(riga.getIdConfigurazione() != null ? riga.getIdConfigurazione() : 0), riga.getIdOperazione() != null ? riga.getIdOperazione() : "DUMMY"};
+		String[] keySaldo = {
+				riga.getIdAzienda(),
+				magazzinoSaldo,
+				riga.getIdArticolo(),
+				Integer.toString(riga.getIdVersioneRcs() != null ? riga.getIdVersioneRcs() : 1),
+				Integer.toString(riga.getIdConfigurazione() != null ? riga.getIdConfigurazione() : 0),
+				riga.getIdOperazione() != null ? riga.getIdOperazione() : "DUMMY"};
 		SaldoMag saldo = SaldoMag.elementWithKey(KeyHelper.buildObjectKey(keySaldo), 0);
 		if(saldo != null)
 			vTm.setGiacenza(saldo.giacenzaNetta().getQuantitaInUMPrm());
@@ -61,7 +71,7 @@ public class YDocTraToModula extends YDocTraToModulaPO {
 		BigDecimal qta = BigDecimal.ZERO;
 		YPanthToModula pTm = (YPanthToModula) Factory.createObject(YPanthToModula.class);
 		pTm.setIdAzienda(this.getIdAzienda());
-		pTm.setTipoDoc('T');
+		pTm.setTipoDoc(TipoDocumentoModula.DOCUMENTO_TRASFERIMENTO);
 		pTm.setIdAnnoDoc(this.getRAnnoDocTra());
 		pTm.setIdNumeroDoc(this.getRNumeroDocTra());
 		pTm.setIdRigaDoc(this.getRRigaDoc());
@@ -141,7 +151,18 @@ public class YDocTraToModula extends YDocTraToModulaPO {
 					em = inviaTestataAModula(numeroListaModula,connection,rows.get(0));
 					if(em == null) {
 						for (YDocTraToModula riga : rows) {
-							em = riga.inviaAModula(numeroListaModula, connection);
+							DocMagTrasferimentoRiga docTrasfRig = getDocumentoTrasferimentoRigaDB(
+									riga.getIdAzienda(), 
+									riga.getRAnnoDocTra(), 
+									riga.getRNumeroDocTra(), riga.getRRigaDoc().toString(),
+									riga.getRDetRigaDoc().toString());
+							char tipoMovim = TipoMovimentoModula.PRELIEVO;
+							if("MOD".equals(docTrasfRig.getIdMagazzino()) && "001".equals(docTrasfRig.getCodiceMagazzinoArrivo())) {
+								tipoMovim = TipoMovimentoModula.PRELIEVO;
+							}else if("001".equals(docTrasfRig.getIdMagazzino()) && "MOD".equals(docTrasfRig.getCodiceMagazzinoArrivo())){
+								tipoMovim = TipoMovimentoModula.VERSAMENTO;
+							}
+							em = riga.inviaAModula(numeroListaModula, connection,tipoMovim);
 							if(em != null) {
 								return em;
 							}
@@ -196,11 +217,11 @@ public class YDocTraToModula extends YDocTraToModulaPO {
 		return scriviTestataDBModula(numeroListaModula, connection,vTm);
 	}
 
-	public ErrorMessage inviaAModula(String numeroListaModula,Connection connection) throws SQLException {
+	public ErrorMessage inviaAModula(String numeroListaModula,Connection connection, char tipoMovimento) throws SQLException {
 		ErrorMessage em = null;
 		YPanthToModula pTm = (YPanthToModula) Factory.createObject(YPanthToModula.class);
 		pTm.setIdAzienda(this.getIdAzienda());
-		pTm.setTipoDoc('C');
+		pTm.setTipoDoc(TipoDocumentoModula.DOCUMENTO_TRASFERIMENTO);
 		pTm.setIdAnnoDoc(this.getRAnnoDocTra());
 		pTm.setIdNumeroDoc(this.getRNumeroDocTra());
 		pTm.setIdRigaDoc(this.getRRigaDoc());
@@ -209,7 +230,7 @@ public class YDocTraToModula extends YDocTraToModulaPO {
 		if(!exists) {
 			pTm.setQtaEvasaUmPrm(BigDecimal.ZERO);
 		}
-		pTm.setTipoMov('V');
+		pTm.setTipoMov(tipoMovimento);
 		pTm.setQtaEvasaUmPrm(pTm.getQtaEvasaUmPrm().add(this.getQtaDaEvadere()));
 		int rc = pTm.save();
 		if(rc < 0)
@@ -279,6 +300,23 @@ public class YDocTraToModula extends YDocTraToModulaPO {
 		}
 		return null;
 	}
+	
+	protected static DocMagTrasferimentoRiga getDocumentoTrasferimentoRigaDB(String idAzienda,String idAnnoOrd,String idNumeroOrd,String idRiga,String idDetRiga) {
+		try {
+			return (DocMagTrasferimentoRiga) DocMagTrasferimentoRiga.elementWithKey(DocMagTrasferimentoRiga.class,
+					KeyHelper.buildObjectKey(new String[] {
+							idAzienda,
+							idAnnoOrd,
+							idNumeroOrd,
+							idRiga,
+							idDetRiga
+					}), PersistentObject.NO_LOCK);
+		} catch (SQLException e) {
+			e.printStackTrace(Trace.excStream);
+		}
+		return null;
+	}
+
 
 }
 

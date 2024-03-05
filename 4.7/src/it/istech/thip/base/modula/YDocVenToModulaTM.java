@@ -1,22 +1,6 @@
-/*
- * @(#)YDocVenToModulaTM.java
- */
-
-/**
- * YDocVenToModulaTM
- *
- * <br></br><b>Copyright (C) : Thera SpA</b>
- * @author Wizard 04/03/2024 at 15:38:22
- */
-/*
- * Revisions:
- * Date          Owner      Description
- * 04/03/2024    Wizard     Codice generato da Wizard
- *
- */
 package it.istech.thip.base.modula;
+
 import com.thera.thermfw.persist.*;
-import com.thera.thermfw.common.*;
 import java.sql.*;
 import com.thera.thermfw.base.*;
 import it.thera.thip.cs.*;
@@ -210,11 +194,7 @@ public class YDocVenToModulaTM extends TableManager {
    *
    */
   private void init() throws SQLException {
-    configure(QTA_ORIGINALE + ", " + QTA_EVASA + ", " + QTA_RESIDUA + ", " + GIACENZA
-         + ", " + QTA_DA_EVADERE + ", " + R_ANNO_DOC_VEN + ", " + R_NUMERO_DOC_VEN + ", " + R_RIGA_DOC
-         + ", " + R_DET_RIGA_DOC + ", " + ID_AZIENDA + ", " + R_ARTICOLO + ", " + STATO
-         + ", " + R_UTENTE_CRZ + ", " + TIMESTAMP_CRZ + ", " + R_UTENTE_AGG + ", " + TIMESTAMP_AGG
-        );
+    configure();
   }
 
 }

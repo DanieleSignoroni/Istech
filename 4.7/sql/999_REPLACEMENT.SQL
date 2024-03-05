@@ -7,3 +7,6 @@
     INSERT INTO <SCH>REPLACEMENT (ORIGINAL_NAME,REPLACING_NAME,TYPE,DISABLED) VALUES ('it.thera.thip.base.articolo.Articolo', 'it.istech.thip.base.articolo.YArticolo', '0', 'N');
     INSERT INTO <SCH>REPLACEMENT (ORIGINAL_NAME,REPLACING_NAME,TYPE,DISABLED) VALUES ('it.thera.thip.base.articolo.ArticoloTM', 'it.istech.thip.base.articolo.YArticoloTM', '0', 'N');
     INSERT INTO <SCH>REPLACEMENT (ORIGINAL_NAME,REPLACING_NAME,TYPE,DISABLED) VALUES ('Articolo', 'YArticolo', '1', 'N');
+	INSERT INTO <SCH>REPLACEMENT (ORIGINAL_NAME,REPLACING_NAME,TYPE,DISABLED) VALUES ('it.thera.thip.vendite.documentoVE.web.DocumentoVenditaEstrattoFormModifier','it.istech.thip.vendite.documentoVE.web.YDocumentoVenditaEstrattoFormModifier', '0', 'N');
+    INSERT INTO <SCH>REPLACEMENT (ORIGINAL_NAME,REPLACING_NAME,TYPE,DISABLED) VALUES ('it.thera.thip.vendite.documentoVE.web.DocumentoTestataVenditaEstrattoFormActionAdapter','it.istech.thip.vendite.documentoVE.web.YDocumentoTestataVenditaEstrattoFormActionAdapter', '0', 'N');
+    

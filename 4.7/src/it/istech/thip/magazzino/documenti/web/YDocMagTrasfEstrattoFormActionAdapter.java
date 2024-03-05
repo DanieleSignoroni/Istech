@@ -52,7 +52,7 @@ public class YDocMagTrasfEstrattoFormActionAdapter extends DocumentoFormActionAd
 			YDocTraToModula.cancellaRigheDocumentoTrasferimento(key); //svuoto le righe legate al mio ordine di vendita
 			YDocTraToModula.creaRighePerDocumentoTrasferimento(key);
 		} catch (Exception e) {
-			e.printStackTrace(Trace.excStream);
+ 			e.printStackTrace(Trace.excStream);
 		}
 		return true;
 

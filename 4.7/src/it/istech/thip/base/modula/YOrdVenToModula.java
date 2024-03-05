@@ -63,7 +63,7 @@ public class YOrdVenToModula extends YOrdVenToModulaPO {
 		BigDecimal qta = BigDecimal.ZERO;
 		YPanthToModula pTm = (YPanthToModula) Factory.createObject(YPanthToModula.class);
 		pTm.setIdAzienda(this.getIdAzienda());
-		pTm.setTipoDoc('V');
+		pTm.setTipoDoc(TipoDocumentoModula.ORDINE_VENDITA);
 		pTm.setIdAnnoDoc(this.getRAnnoOrdVen());
 		pTm.setIdNumeroDoc(this.getRNumeroOrdVen());
 		pTm.setIdRigaDoc(this.getRRigaOrd());
@@ -232,7 +232,7 @@ public class YOrdVenToModula extends YOrdVenToModulaPO {
 		ErrorMessage em = null;
 		YPanthToModula pTm = (YPanthToModula) Factory.createObject(YPanthToModula.class);
 		pTm.setIdAzienda(this.getIdAzienda());
-		pTm.setTipoDoc('V');
+		pTm.setTipoDoc(TipoDocumentoModula.ORDINE_VENDITA);
 		pTm.setIdAnnoDoc(this.getRAnnoOrdVen());
 		pTm.setIdNumeroDoc(this.getRNumeroOrdVen());
 		pTm.setIdRigaDoc(this.getRRigaOrd());
@@ -241,7 +241,7 @@ public class YOrdVenToModula extends YOrdVenToModulaPO {
 		if(!exists) {
 			pTm.setQtaEvasaUmPrm(BigDecimal.ZERO);
 		}
-		pTm.setTipoMov('P');
+		pTm.setTipoMov(TipoMovimentoModula.PRELIEVO);
 		pTm.setQtaEvasaUmPrm(pTm.getQtaEvasaUmPrm().add(this.getQtaDaEvadere()));
 		int rc = pTm.save();
 		if(rc < 0)
@@ -284,7 +284,7 @@ public class YOrdVenToModula extends YOrdVenToModulaPO {
 			//new error msg testata non trovata
 		}
 		String ragSoc = testata.getCliente().getIdCliente();
-		String descrizioneLista = "[V]" + ragSoc.trim().concat(",").concat(testata.getAnnoDocumento().trim()).concat(",").concat(testata.getNumeroDocumento().trim());
+		String descrizioneLista = "["+String.valueOf(TipoMovimentoModula.PRELIEVO)+"]" + ragSoc.trim().concat(",").concat(testata.getAnnoDocumento().trim()).concat(",").concat(testata.getNumeroDocumento().trim());
 		int ris;
 		try {
 			ris = YGestoreEsportazioneModula.esportaTestataOrdine(connection, numeroListaModula, descrizioneLista, TipoMovimentoModula.PRELIEVO, null);

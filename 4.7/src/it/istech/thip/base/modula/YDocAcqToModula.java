@@ -46,7 +46,7 @@ public class YDocAcqToModula extends YDocAcqToModulaPO {
 		if(((DocumentoAcquisto)riga.getTestata()).getTipoDocumento() == TipoDocumentoAcq.ACQUISTO)
 			vTm.setQtaOriginale(riga.getQtaRicevuta().getQuantitaInUMRif());
 		else if(((DocumentoAcquisto)riga.getTestata()).getTipoDocumento() == TipoDocumentoAcq.RESO_FORNITORE) {
-			vTm.setQtaOriginale(riga.getQtaInUMPrm());
+			vTm.setQtaOriginale(riga.getQtaRicevuta().getQuantitaInUMRif());
 		}
 
 		BigDecimal qtaGiaEvasa = vTm.cercaQtaGiaEvasa();
@@ -55,7 +55,7 @@ public class YDocAcqToModula extends YDocAcqToModulaPO {
 		vTm.setQtaResidua(vTm.getQtaOriginale().subtract(vTm.getQtaEvasa()));
 		vTm.setQtaDaEvadere(vTm.getQtaResidua());
 
-		String[] keySaldo = {riga.getIdAzienda(),"MOD",riga.getIdArticolo(),Integer.toString(riga.getIdVersioneRcs()), Integer.toString(riga.getIdConfigurazione() != null ? riga.getIdConfigurazione() : 0), riga.getIdOperazione() != null ? riga.getIdOperazione() : "DUMMY"};
+		String[] keySaldo = {riga.getIdAzienda(),"001",riga.getIdArticolo(),Integer.toString(riga.getIdVersioneRcs()), Integer.toString(riga.getIdConfigurazione() != null ? riga.getIdConfigurazione() : 0), riga.getIdOperazione() != null ? riga.getIdOperazione() : "DUMMY"};
 		SaldoMag saldo = SaldoMag.elementWithKey(KeyHelper.buildObjectKey(keySaldo), 0);
 		if(saldo != null)
 			vTm.setGiacenza(saldo.giacenzaNetta().getQuantitaInUMPrm());
@@ -66,7 +66,7 @@ public class YDocAcqToModula extends YDocAcqToModulaPO {
 		BigDecimal qta = BigDecimal.ZERO;
 		YPanthToModula pTm = (YPanthToModula) Factory.createObject(YPanthToModula.class);
 		pTm.setIdAzienda(this.getIdAzienda());
-		pTm.setTipoDoc('B');
+		pTm.setTipoDoc(TipoDocumentoModula.DOCUMENTO_ACQUISTO);
 		pTm.setIdAnnoDoc(this.getRAnnoDocAcq());
 		pTm.setIdNumeroDoc(this.getRNumeroDocAcq());
 		pTm.setIdRigaDoc(this.getRRigaDoc());
@@ -211,7 +211,7 @@ public class YDocAcqToModula extends YDocAcqToModulaPO {
 		ErrorMessage em = null;
 		YPanthToModula pTm = (YPanthToModula) Factory.createObject(YPanthToModula.class);
 		pTm.setIdAzienda(this.getIdAzienda());
-		pTm.setTipoDoc('B');
+		pTm.setTipoDoc(TipoDocumentoModula.DOCUMENTO_ACQUISTO);
 		pTm.setIdAnnoDoc(this.getRAnnoDocAcq());
 		pTm.setIdNumeroDoc(this.getRNumeroDocAcq());
 		pTm.setIdRigaDoc(this.getRRigaDoc());
@@ -221,9 +221,9 @@ public class YDocAcqToModula extends YDocAcqToModulaPO {
 			pTm.setQtaEvasaUmPrm(BigDecimal.ZERO);
 		}
 		if(docAcq.getTipoDocumento() == TipoDocumentoAcq.ACQUISTO) {
-			pTm.setTipoMov('V');
+			pTm.setTipoMov(TipoMovimentoModula.VERSAMENTO); //carico dopo BEM
 		}else if(docAcq.getTipoDocumento() == TipoDocumentoAcq.RESO_FORNITORE) {
-			pTm.setTipoMov('P');
+			pTm.setTipoMov(TipoMovimentoModula.PRELIEVO); //prelievo perch'e mando merce indietro
 		}
 		pTm.setQtaEvasaUmPrm(pTm.getQtaEvasaUmPrm().add(this.getQtaDaEvadere()));
 		int rc = pTm.save();
@@ -266,12 +266,12 @@ public class YDocAcqToModula extends YDocAcqToModulaPO {
 		if(testata == null) {
 			//new error msg testata non trovata
 		}
-		String ragSoc = testata.getCliente().getIdCliente();
+		String ragSoc = testata.getFornitore().getIdFornitore();
 		String descrizioneLista = null;
 		if(docAcq.getTipoDocumento() == TipoDocumentoAcq.ACQUISTO) {
-			descrizioneLista = "[V]" + ragSoc.trim().concat(",").concat(testata.getAnnoDocumento().trim()).concat(",").concat(testata.getNumeroDocumento().trim());
+			descrizioneLista = "["+String.valueOf(TipoMovimentoModula.VERSAMENTO)+"]" + ragSoc.trim().concat(",").concat(testata.getAnnoDocumento().trim()).concat(",").concat(testata.getNumeroDocumento().trim());
 		}else if(docAcq.getTipoDocumento() == TipoDocumentoAcq.RESO_FORNITORE) {
-			descrizioneLista = "[P]" + ragSoc.trim().concat(",").concat(testata.getAnnoDocumento().trim()).concat(",").concat(testata.getNumeroDocumento().trim());
+			descrizioneLista = "["+String.valueOf(TipoMovimentoModula.PRELIEVO)+"]" + ragSoc.trim().concat(",").concat(testata.getAnnoDocumento().trim()).concat(",").concat(testata.getNumeroDocumento().trim());
 		}
 		int ris = 0;
 		try {

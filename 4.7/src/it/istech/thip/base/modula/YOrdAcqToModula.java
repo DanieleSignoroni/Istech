@@ -51,7 +51,7 @@ public class YOrdAcqToModula extends YOrdAcqToModulaPO {
 		vTm.setQtaResidua(vTm.getQtaOriginale().subtract(vTm.getQtaEvasa()));
 		vTm.setQtaDaEvadere(vTm.getQtaResidua());
 
-		String[] keySaldo = {riga.getIdAzienda(),"MOD",riga.getIdArticolo(),Integer.toString(riga.getIdVersioneRcs()), Integer.toString(riga.getIdConfigurazione() != null ? riga.getIdConfigurazione() : 0), riga.getIdOperazione() != null ? riga.getIdOperazione() : "DUMMY"};
+		String[] keySaldo = {riga.getIdAzienda(),"001",riga.getIdArticolo(),Integer.toString(riga.getIdVersioneRcs()), Integer.toString(riga.getIdConfigurazione() != null ? riga.getIdConfigurazione() : 0), riga.getIdOperazione() != null ? riga.getIdOperazione() : "DUMMY"};
 		SaldoMag saldo = SaldoMag.elementWithKey(KeyHelper.buildObjectKey(keySaldo), 0);
 		if(saldo != null)
 			vTm.setGiacenza(saldo.giacenzaNetta().getQuantitaInUMPrm());
@@ -62,7 +62,7 @@ public class YOrdAcqToModula extends YOrdAcqToModulaPO {
 		BigDecimal qta = BigDecimal.ZERO;
 		YPanthToModula pTm = (YPanthToModula) Factory.createObject(YPanthToModula.class);
 		pTm.setIdAzienda(this.getIdAzienda());
-		pTm.setTipoDoc('A');
+		pTm.setTipoDoc(TipoDocumentoModula.ORDINE_ACQUISTO);
 		pTm.setIdAnnoDoc(this.getRAnnoOrdAcq());
 		pTm.setIdNumeroDoc(this.getRNumeroOrdAcq());
 		pTm.setIdRigaDoc(this.getRRigaOrd());
@@ -209,7 +209,7 @@ public class YOrdAcqToModula extends YOrdAcqToModulaPO {
 		ErrorMessage em = null;
 		YPanthToModula pTm = (YPanthToModula) Factory.createObject(YPanthToModula.class);
 		pTm.setIdAzienda(this.getIdAzienda());
-		pTm.setTipoDoc('V');
+		pTm.setTipoDoc(TipoDocumentoModula.ORDINE_ACQUISTO);
 		pTm.setIdAnnoDoc(this.getRAnnoOrdAcq());
 		pTm.setIdNumeroDoc(this.getRNumeroOrdAcq());
 		pTm.setIdRigaDoc(this.getRRigaOrd());
@@ -218,7 +218,7 @@ public class YOrdAcqToModula extends YOrdAcqToModulaPO {
 		if(!exists) {
 			pTm.setQtaEvasaUmPrm(BigDecimal.ZERO);
 		}
-		pTm.setTipoMov('P');
+		pTm.setTipoMov(TipoMovimentoModula.PRELIEVO);
 		pTm.setQtaEvasaUmPrm(pTm.getQtaEvasaUmPrm().add(this.getQtaDaEvadere()));
 		int rc = pTm.save();
 		if(rc < 0)
@@ -261,7 +261,7 @@ public class YOrdAcqToModula extends YOrdAcqToModulaPO {
 			//new error msg testata non trovata
 		}
 		String ragSoc = testata.getFornitore().getIdFornitore();
-		String descrizioneLista = "[P]" + ragSoc.trim().concat(",").concat(testata.getAnnoDocumento().trim()).concat(",").concat(testata.getNumeroDocumento().trim());
+		String descrizioneLista = "["+String.valueOf(TipoMovimentoModula.PRELIEVO)+"]" + ragSoc.trim().concat(",").concat(testata.getAnnoDocumento().trim()).concat(",").concat(testata.getNumeroDocumento().trim());
 		int ris;
 		try {
 			ris = YGestoreEsportazioneModula.esportaTestataOrdine(connection, numeroListaModula, descrizioneLista, TipoMovimentoModula.PRELIEVO, null);

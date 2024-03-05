@@ -1,6 +1,7 @@
 package it.istech.thip.base.modula.web;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URLEncoder;
 
 import javax.servlet.ServletException;
@@ -14,7 +15,7 @@ import com.thera.thermfw.web.WebToolBar;
 import com.thera.thermfw.web.WebToolBarButton;
 import com.thera.thermfw.web.servlet.GridActionAdapter;
 
-import it.istech.thip.base.modula.YOrdVenToModula;
+import it.istech.thip.base.modula.YDocVenToModula;
 
 public class YDocVenToModulaGridActionAdapter extends GridActionAdapter{
 	
@@ -30,14 +31,13 @@ public class YDocVenToModulaGridActionAdapter extends GridActionAdapter{
 		toolBar.addButton(btn1);
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	protected void otherActions(ClassADCollection cadc, ServletEnvironment se) throws ServletException, IOException {
 		String azione = se.getRequest().getParameter(ACTION);
 		if("INVIA_MODULA".equals(azione)) {
 			try {
 				String[] objectKeys = se.getRequest().getParameterValues(OBJECT_KEY);
-				ErrorMessage em = YOrdVenToModula.inviaAModulaMultple(objectKeys);
+				ErrorMessage em = YDocVenToModula.inviaAModulaMultple(objectKeys);
 				if(em == null) {
 					String[] keyParts = KeyHelper.unpackObjectKey(objectKeys[0]);
 					String key = KeyHelper.buildObjectKey(new String[] {
@@ -45,8 +45,9 @@ public class YDocVenToModulaGridActionAdapter extends GridActionAdapter{
 							keyParts[1],
 							keyParts[2]
 					});
-					String url = "/" + se.getServletPath() + "/it.thera.thip.vendite.ordineVE.web.OrdineVenditaGridActionAdapter?thClassName=OrdineVendita&ObjectKey="+URLEncoder.encode(key)+"&thTarget=NEW&thAction=UPDATE_RIGHE";
-					se.sendRequest(getServletContext(), url, false);
+					String url = "/" + se.getServletPath() + "/it.thera.thip.vendite.documentoVE.web.DocumentoVenditaGridActionAdapter?thClassName=DocumentoVendita&ObjectKey="+URLEncoder.encode(key,"UTF-8")+"&thTarget=NEW&thAction=UPDATE_RIGHE";
+					//se.sendRequest(getServletContext(), url, false);
+					executeJSOpenAction(se, url);
 				}else {
 					se.addErrorMessage(em);
 					se.sendRequest(getServletContext(), "com/thera/thermfw/common/InfoAreaHandler.jsp", false);
@@ -57,6 +58,37 @@ public class YDocVenToModulaGridActionAdapter extends GridActionAdapter{
 		}else {
 			super.otherActions(cadc, se);
 		}
+	}
+	
+	public void executeJSOpenAction(ServletEnvironment se, String url) {
+		try {
+			PrintWriter out = se.getResponse().getWriter();
+			out.println("  <script language=\'JavaScript1.2\'>");
+			String initialActionAdapter = getStringParameter(se.getRequest(), "thInitialActionAdapter");
+			if(initialActionAdapter != null) {
+				out.println("    var errViewObj = window.parent.eval(window.parent.errorsViewName);");
+				out.println("    errViewObj.setMessage(null);");
+				out.println("    parent.enableFormActions();");
+			}
+			else {
+				out.println("window.parent.ErVwinfoarea.clearDisplay();");
+				out.println("window.parent.enableGridActions();");
+			}
+			if (url.startsWith("/"))
+				url = url.substring(1);
+			out.println("    var url = '" + se.getWebApplicationPath() + url + "'");
+			out.println(getWinFeatures(url));           
+			out.println("    var winName = '" + String.valueOf(System.currentTimeMillis()) + "';");
+			out.println("    var winrUrl = parent.window.open(url,'_self');");
+			out.println("  </script>");
+		}
+		catch (Exception ex) {
+			ex.printStackTrace(Trace.excStream);
+		}
+	}
+
+	public String getWinFeatures(String url) {
+		return "var winFeature = 'width=1366, height=768, resizable=yes';";	  
 	}
 
 	@Override

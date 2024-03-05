@@ -24,7 +24,10 @@ public class YOrdineAcquistoEstrattoFormModifier extends OrdineAcquistoEstrattoF
 		super.writePulsantiBarraAzioniStandard(out);
 		BODataCollector boDC = this.getBODataCollector();
 		OrdineAcquisto doc = (OrdineAcquisto)boDC.getBo();
-		if (doc.getStatoAvanzamento() == StatoAvanzamento.DEFINITIVO && doc.getFlagRiservatoUtente2() == '-' && doc.getDatiComuniEstesi().getStato() == 'V') {
+		if (doc.getStatoAvanzamento() == StatoAvanzamento.DEFINITIVO 
+				&& doc.getFlagRiservatoUtente2() == '-' 
+				&& doc.getDatiComuniEstesi().getStato() == 'V'
+				&& doc.getCausale().isLavEsterna()) { //solo per C/Lav
 			out.println("<td  nowrap=\"true\" height=\"0\">");
 			out.println("<button name=\"thgenera\" id=\"thgenera\" onclick=\"genera()\" style=\"width:30px;height:30px;\" type=\"button\" title=\"" + ResourceLoader.getString("it/sicons/thip/base/comuniVenAcq/resources/Documento", "Genera") + "\">");
 			out.println("<img border=\"0\" width=\"24px\" height=\"24px\" src=\"it/sicons/thip/modula/images/Modula.ico\" >");

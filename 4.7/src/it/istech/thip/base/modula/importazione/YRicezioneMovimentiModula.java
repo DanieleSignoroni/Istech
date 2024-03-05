@@ -18,8 +18,10 @@ import com.thera.thermfw.persist.KeyHelper;
 import com.thera.thermfw.persist.PersistentObject;
 import com.thera.thermfw.security.Authorizable;
 
+import it.istech.thip.base.modula.TipoDocumentoModula;
 import it.istech.thip.base.modula.TipoMovimentoModula;
 import it.istech.thip.base.modula.YModulaConnection;
+import it.istech.thip.base.modula.YModulaToPanth;
 import it.istech.thip.base.modula.YPersDatiModula;
 import it.thera.thip.base.articolo.Articolo;
 import it.thera.thip.base.azienda.Azienda;
@@ -138,6 +140,7 @@ public class YRicezioneMovimentiModula extends BatchRunnable implements Authoriz
 				break;
 			}
 			if(idMagazzinoArrivo != null && idMagazzinoPartenza != null) {
+				int rc = 0;
 				try {
 					DocMagTrasferimento docTrasf = creaDocumentoTrasferimento(idMagazzinoPartenza, idMagazzinoArrivo);
 					String msg = movimento.getOrd_tipoop().charAt(0) == TipoMovimentoModula.PRELIEVO ? "prelievo" : "versamento";
@@ -156,10 +159,10 @@ public class YRicezioneMovimentiModula extends BatchRunnable implements Authoriz
 							}else {
 								output.println("L'articolo {"+(Azienda.getAziendaCorrente()+"/"+riga.getRig_articolo()+"} non esiste in Panthera"));
 							}
+							rc += YModulaToPanth.scriviModulaToPanth(movimento, riga, TipoDocumentoModula.DOCUMENTO_TRASFERIMENTO);
 						}
 						if(docTrasf.getRighe().size() > 0) {
 							docTrasf.setSalvaRighe(true);
-							int rc = 0;
 							try {
 								rc = docTrasf.save();
 								if(rc >= BODataCollector.OK) {
