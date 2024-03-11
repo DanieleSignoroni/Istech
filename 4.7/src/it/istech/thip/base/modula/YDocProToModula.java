@@ -244,9 +244,9 @@ public class YDocProToModula extends YDocProToModulaPO {
 				ris = YArticolo.esportaArticoloVersoModula(connection, (YArticolo) this.getRelarticolo());
 				if(ris > 0)
 					ris += YArticolo.aggiornaStatoEsportazioneModulaArticolo(idArticolo, true);
-			}
-			if(ris <= 0) {
-				return new ErrorMessage("YSOF3_001","Impossibile esportare il nuovo articolo verso modula");
+				if(ris <= 0) {
+					return new ErrorMessage("YSOF3_001","Impossibile esportare il nuovo articolo verso modula");
+				}
 			}
 			ris = YGestoreEsportazioneModula.esportaRigaOrdine(connection, numeroListaModula, idArticolo, null, qta, lineNumber, null);
 			if(ris <= 0) {

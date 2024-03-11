@@ -84,7 +84,7 @@ public class YOrdVenToModula extends YOrdVenToModulaPO {
 		return qta;
 	}
 
-	
+
 	@SuppressWarnings("unchecked")
 	public static void creaRighePerOrdineVendita(String keyOrdVen) throws SQLException {
 		OrdineVendita ordVen = (OrdineVendita) OrdineVendita.elementWithKey(OrdineVendita.class, keyOrdVen, 0);
@@ -101,7 +101,7 @@ public class YOrdVenToModula extends YOrdVenToModulaPO {
 					Articolo art = riga.getArticolo();
 					switch(art.getTipoParte()) {
 					case ArticoloDatiIdent.KIT_NON_GEST:
-						
+
 						List<OrdineVenditaRigaSec> righeSec = riga.getRigheSecondarie();
 						for(OrdineVenditaRigaSec rigaSec : righeSec) {
 							YOrdVenToModula rigaOrdVenToModula = new YOrdVenToModula(rigaSec);
@@ -109,7 +109,7 @@ public class YOrdVenToModula extends YOrdVenToModulaPO {
 						}
 						break;					
 					case ArticoloDatiIdent.KIT_GEST:
-						
+
 						YOrdVenToModula rigaOrdVenToModula = new YOrdVenToModula(riga);
 						righeOrdVenToModula.add(rigaOrdVenToModula);
 						break;
@@ -125,7 +125,7 @@ public class YOrdVenToModula extends YOrdVenToModulaPO {
 		}
 	}
 
-	
+
 	@SuppressWarnings("unchecked")
 	public static int cancellaRigheOrdineVendita(String keyOrdVen) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
 		int recordCancellati = 0;
@@ -141,7 +141,7 @@ public class YOrdVenToModula extends YOrdVenToModulaPO {
 		return recordCancellati;
 	}
 
-	
+
 	public static ErrorMessage inviaAModulaMultple(String[] objectKeys) {
 		ErrorMessage em = null;
 		Connection connection = null;
@@ -253,9 +253,9 @@ public class YOrdVenToModula extends YOrdVenToModulaPO {
 				ris = YArticolo.esportaArticoloVersoModula(connection, (YArticolo) this.getRelarticolo());
 				if(ris > 0)
 					ris += YArticolo.aggiornaStatoEsportazioneModulaArticolo(idArticolo, true);
-			}
-			if(ris <= 0) {
-				return new ErrorMessage("YSOF3_001","Impossibile esportare il nuovo articolo verso modula");
+				if(ris <= 0) {
+					return new ErrorMessage("YSOF3_001","Impossibile esportare il nuovo articolo verso modula");
+				}
 			}
 			ris = YGestoreEsportazioneModula.esportaRigaOrdine(connection, numeroListaModula, idArticolo, null, qta, lineNumber, null);
 			if(ris <= 0) {

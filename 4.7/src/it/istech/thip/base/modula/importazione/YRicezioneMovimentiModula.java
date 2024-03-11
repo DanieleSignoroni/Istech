@@ -128,12 +128,12 @@ public class YRicezioneMovimentiModula extends BatchRunnable implements Authoriz
 			String idMagazzinoArrivo = null;
 			switch (movimento.getOrd_tipoop().charAt(0)) {
 			case TipoMovimentoModula.PRELIEVO:
-				idMagazzinoArrivo = "001";
-				idMagazzinoPartenza = "MOD";
-				break;
-			case TipoMovimentoModula.VERSAMENTO:
 				idMagazzinoArrivo = "MOD";
 				idMagazzinoPartenza = "001";
+				break;
+			case TipoMovimentoModula.VERSAMENTO:
+				idMagazzinoArrivo = "001";
+				idMagazzinoPartenza = "MOD";
 				break;
 
 			default:

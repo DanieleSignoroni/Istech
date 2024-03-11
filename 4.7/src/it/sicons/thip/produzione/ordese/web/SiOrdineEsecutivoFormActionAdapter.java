@@ -77,7 +77,7 @@ public class SiOrdineEsecutivoFormActionAdapter extends OrdineEsecutivoFormActio
 
 	public void modifyToolBar(WebToolBar toolBar) {
 		super.modifyToolBar(toolBar);
-		WebToolBarButton addLinkButton = new WebToolBarButton("MaterialiModula", "action_submit", "new", "no", "it.sicons.thip.modula.resources.SiModula", "MaterialiModula", "it/thera/thip/produzione/ordese/images/Materiale.gif", "MAT_A_MOD", "single", false);
+		WebToolBarButton addLinkButton = new WebToolBarButton("MaterialiModula", "action_submit", "new", "no", "it.sicons.thip.modula.resources.SiModula", "MaterialiModula", "it/sicons/thip/modula/images/Modula.ico", "MAT_A_MOD", "single", false);
 		toolBar.addSeparator();
 		toolBar.addButton(addLinkButton);
 		//      WebToolBarButton addLinkButton2 = new WebToolBarButton("MaterialiNonModula", "action_submit", "new", "no", "it.sicons.thip.modula.resources.SiModula", "MaterialiNonModula", "it/thera/thip/produzione/ordese/images/Materiale.gif", "MAT_NON_MOD", "single", false);
